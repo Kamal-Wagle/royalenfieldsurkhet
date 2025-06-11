@@ -5,9 +5,28 @@ import connectDB from "@/lib/db";
 import { verifyAdmin } from "@/lib/auth";
 import News from "@/lib/models/news";
 
+    
+const privateKey = process.env.GDRIVE_PRIVATE_KEY
+  ?.replace(/\\n/g, "\n")       // replace literal \n with actual newlines
+  .replace(/^"(.*)"$/, '$1')    // remove wrapping quotes if any
+  .trim();                     // remove leading/trailing whitespace
+  
 const authenticateGoogle = () => {
+  const credentials = {
+    type: "service_account",
+    project_id: process.env.GDRIVE_PROJECT_ID,
+    private_key_id: process.env.GDRIVE_PRIVATE_KEY_ID,
+    private_key: privateKey!,
+    client_id: process.env.GDRIVE_CLIENT_ID,
+    auth_uri: process.env.GDRIVE_AUTH_URI,
+    token_uri: process.env.GDRIVE_TOKEN_URI,
+    auth_provider_x509_cert_url: process.env.GDRIVE_AUTH_PROVIDER_CERT_URL,
+    client_x509_cert_url: process.env.GDRIVE_CLIENT_CERT_URL,
+    client_email:process.env.GDRIVE_CLIENT_EMAIL,
+  };
+
   return new google.auth.GoogleAuth({
-    keyFile: "./data.json", // your service account key file path
+    credentials,
     scopes: ["https://www.googleapis.com/auth/drive"],
   });
 };
