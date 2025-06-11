@@ -6,13 +6,19 @@ import { Pencil, Trash } from "lucide-react";
 // Define the Staff interface to type the data
 export interface StaffItem {
   _id: string;
-  id: string;
+  id?: string;
   name: string;
   email: string;
   contactNumber: string;
   staffPhoto: string;
   role: string;
 }
+
+// Convert Google Drive URL to direct image link
+const getDirectImageUrl = (url: string) => {
+  const match = url.match(/\/d\/([^/]+)\//);
+  return match ? `https://drive.google.com/uc?export=view&id=${match[1]}` : url;
+};
 
 export default function StaffTable({
   items = [],
@@ -24,7 +30,6 @@ export default function StaffTable({
   onDelete: (id: string) => void;
 }) {
 
-  // Ensure that items is an array and handle errors gracefully
   if (!Array.isArray(items)) {
     console.error("Expected 'items' to be an array but received:", items);
     return <p className="text-center text-gray-500">Error: Invalid staff data.</p>;
@@ -56,7 +61,7 @@ export default function StaffTable({
               <TableCell>
                 {staff.staffPhoto ? (
                   <Image
-                    src={staff.staffPhoto}
+                    src={getDirectImageUrl(staff.staffPhoto)}
                     alt={staff.name}
                     width={50}
                     height={50}

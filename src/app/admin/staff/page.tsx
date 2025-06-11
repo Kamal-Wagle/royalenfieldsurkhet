@@ -33,7 +33,7 @@ export default function AdminStaffPage() {
     queryKey: ["staff"],
     queryFn: async () => {
       const response = await $axios.get("/api/staff");
-      return response.data.staffMembers || []; // Ensure correct mapping from API response
+      return response.data.staffList || []; // Ensure correct mapping from API response
     },
    
   });
@@ -66,7 +66,7 @@ export default function AdminStaffPage() {
 
   // EDIT staff (Redirect to edit page)
   const handleEdit = (staff: StaffItem) => {
-    router.push(`/admin/staff/edit/${staff._id}`);
+    router.push(`/admin/staff/edit/${staff.id}`);
   };
 
   return (

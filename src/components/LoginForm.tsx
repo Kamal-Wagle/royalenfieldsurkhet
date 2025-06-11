@@ -85,7 +85,7 @@ const Login = () => {
                {/* Display error if any */}
       {isError && (
         <p className="mt-4 text-red-500">
-          {(error as CustomError)?.response?.data?.message || "An error occurred."}
+          {(error as CustomError)?.response?.data?.message || "Something Went Wrong."}
         </p>
       )}
               <Button type="submit" className="w-full" disabled={isPending}>

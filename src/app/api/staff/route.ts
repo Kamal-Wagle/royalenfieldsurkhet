@@ -1,77 +1,129 @@
-import { NextRequest, NextResponse } from "next/server";
+import { google } from "googleapis";
+import { NextResponse } from "next/server";
+import mime from "mime-types";
+import { Readable } from "stream";
+import Staff from "@/lib/models/staff"; // your staff model
 import connectDB from "@/lib/db";
-import Staff from "@/lib/models/staff";
-import { verifyAdmin } from "@/lib/auth";
 
-// Create a new staff member (POST)
-export async function POST(request: NextRequest) {
-    try {
-        const reqBody = await request.json();
-        const { name, email, contactNumber, staffPhoto, role } = reqBody;
-        console.log(reqBody);
-
-        // Connect to the database
-        await connectDB();
-
-        // Check if the request is coming from an authenticated admin
-        const user = await verifyAdmin(request);
-
-        if (user instanceof NextResponse) {
-            return user;  // If `verifyAdmin` returns a NextResponse, the user is unauthorized
-        }
-
-        // Check if the staff member already exists (by email)
-        const existingStaff = await Staff.findOne({ email });
-
-        if (existingStaff) {
-            return NextResponse.json({ error: "Staff member already exists" }, { status: 400 });
-        }
-
-        // Create a new staff member
-        const newStaff = new Staff({
-            name,
-            email,
-            contactNumber,
-            staffPhoto,
-            role,
-        });
-
-        // Save the new staff member to the database
-        const savedStaff = await newStaff.save();
-
-        return NextResponse.json({
-            message: "Staff member created successfully",
-            success: true,
-            savedStaff,
-        });
-    } catch (error: unknown) {
-        if (error instanceof Error) {
-            return NextResponse.json({ error: error.message }, { status: 500 });
-        } else {
-            return NextResponse.json({ error: "An unexpected error occurred" }, { status: 500 });
-        }
-    }
+const folderId = process.env.GDRIVE_Staff_FOLDER_ID;
+if (!folderId) {
+  throw new Error("GDRIVE_Staff_FOLDER_ID is not defined");
 }
 
-// Get all staff members (GET)
-export async function GET() {
-    try {
-        // Connect to the database
-        await connectDB();
+const authenticateGoogle = () => {
+  return new google.auth.GoogleAuth({
+    keyFile: process.env.GOOGLE_APPLICATION_CREDENTIALS || './data.json',
+    scopes: ["https://www.googleapis.com/auth/drive"],
+  });
+};
 
-        // Fetch all staff members from the database
-        const staffMembers = await Staff.find();
 
-        return NextResponse.json({
-            message: "Staff members fetched successfully",
-            success: true,
-            staffMembers,
-        });
-    } catch (error: unknown) {
-        if (error instanceof Error) {
-            return NextResponse.json({ error: error.message }, { status: 500 });
-        } else {
-            return NextResponse.json({ error: "An unexpected error occurred" }, { status: 500 });
-        }
+const uploadFileToDrive = async (folderId: string, file: File) => {
+  const auth = authenticateGoogle();
+  const drive = google.drive({ version: "v3", auth });
+
+  const mimeType = mime.lookup(file.name) || "application/octet-stream";
+
+  const arrayBuffer = await file.arrayBuffer();
+  const buffer = Buffer.from(arrayBuffer);
+
+  const fileMetadata = {
+    name: file.name,
+    parents: [folderId],
+  };
+
+  const response = await drive.files.create({
+    requestBody: fileMetadata,
+    media: {
+      mimeType,
+      body: Readable.from(buffer),
+    },
+    fields: "id",
+  });
+
+  const fileLink = await drive.files.get({
+    fileId: response.data.id!,
+    fields: "webViewLink",
+  });
+
+  return {
+    id: response.data.id!,
+    link: fileLink.data.webViewLink || "",
+  };
+};
+
+
+export async function POST(req: Request) {
+  try {
+    await connectDB();
+
+    const formData = await req.formData();
+
+    const name = formData.get("name") as string | null;
+    const contactNumber = formData.get("contactNumber") as string | null;
+    const qualificationsRaw = formData.getAll("qualifications") as string[];
+    const gender = formData.get("gender") as string | null;
+    const employmentType = formData.get("employmentType") as string | null;
+    const email = formData.get("email") as string | null;
+    const role = formData.get("role") as string | null;
+    const staffPhotoFile = formData.get("staffPhoto") as File | null;
+
+    if (!name || !contactNumber || !email || !role) {
+      return NextResponse.json(
+        { error: "Missing required fields: name, contactNumber, email, or role" },
+        { status: 400 }
+      );
     }
+
+    let staffPhotoLink = "";
+    let fileId = "";
+
+    if (staffPhotoFile) {
+      const uploaded = await uploadFileToDrive(folderId as string, staffPhotoFile);
+      staffPhotoLink = uploaded.link;
+      fileId = uploaded.id;
+    }
+
+    const newStaff = await Staff.create({
+      name,
+      contactNumber,
+      qualifications: qualificationsRaw || [],
+      gender,
+      employmentType,
+      email,
+      role,
+      staffPhoto: staffPhotoLink,
+      fileId, // <-- save Drive file ID here
+    });
+
+    return NextResponse.json({ message: "Staff saved successfully", staff: newStaff }, { status: 201 });
+  } catch (error: unknown) {
+    console.error("Error saving staff:", error);
+    const errorMessage = error instanceof Error ? error.message : "Internal server error";
+    return NextResponse.json(
+      { error: errorMessage },
+      { status: 500 }
+    );
+  }
+}
+
+
+  
+
+export async function GET() {
+  try {
+    await connectDB();
+
+    const staffList = await Staff.find().sort({ createdAt: -1 });
+
+    return NextResponse.json({
+      message: "Staff fetched successfully",
+      success: true,
+      staffList,
+    });
+  } catch (error: unknown) {
+    console.error("Fetch error:", error);
+    const errorMessage = error instanceof Error ? error.message : "Internal server error";
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
+  }
 }

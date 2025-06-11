@@ -120,36 +120,43 @@
 
 
 ///
+
+
 'use client';
 
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Coffee, Package, Tag, Users, Plus, Home, LogOut, UserCog, ChevronRight, ChevronLeft } from "lucide-react"
+import { Coffee, Package, Users, Plus, Home,  UserCog, ChevronRight, ChevronLeft } from "lucide-react"
 import { cn } from '@/lib/utils';
+import Logout from '@/components/Logout';
 
 const sidebarItems = [
-  { label: "Dashboard", href: "/admin", icon: Home },
-    { label: "Menu Items", href: "/admin/menu", icon: Package, group: "menu" },
-    { label: "Add Menu Item", href: "/admin/menu/new", icon: Plus, group: "menu" },
-    { label: "Offers", href: "/admin/offer", icon: Tag, group: "offers" },
-    { label: "Add Offer", href: "/admin/offer/new", icon: Plus, group: "offers" },
+    { label: "Dashboard", href: "/admin", icon: Home },
+    { label: "Notice", href: "/admin/notice", icon: Package, group: "notice" },
+    { label: "Add Notice Item", href: "/admin/notice/new", icon: Plus, group: "notice" },
+    { label: "Result", href: "/admin/result", icon: Package, group: "result" },
+    { label: "Add Result Item", href: "/admin/result/new", icon: Plus, group: "notice" },
     { label: "Staff", href: "/admin/staff", icon: Users, group: "staff" },
     { label: "Add Staff", href: "/admin/staff/new", icon: Plus, group: "staff" },
     { label: "User Management", href: "/admin/user", icon: UserCog, group: "users" },
     { label: "Add User", href: "/admin/user/new", icon: Plus, group: "users" },
-    { label: "Cloudinary", href: "https://console.cloudinary.com/pm/c-07c9f0310bf57e4e4f2012fbfdab41/media-explorer", icon: Coffee }, // New Cloudinary Item
-    { label: "Gallery", href: "/admin/gallery", icon: Plus }, // New Cloudinary Item
+    { label: "Gallery", href: "/admin/gallery", icon: Plus },
+    { label: "Add Gallery Images", href: "/admin/gallery/new", icon: Plus, group: "gallery" },
+    { label: "Add Gallery Album", href: "/admin/album/new", icon: Plus, group: "gallery" },
+    { label: "Album", href: "/admin/album", icon: Plus, group: "gallery" },
+    { label: "News", href: "/admin/news", icon: Plus, group: "news" },
+    { label: "Add New News", href: "/admin/news/new", icon: Plus, group: "news" },
+    { label: " Event", href: "/admin/event", icon: Plus, group: "event" },
+    { label: "Add New Event", href: "/admin/event/new", icon: Plus, group: "event" },
   ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const [collapsed, setCollapsed] = useState(false);
   const pathname = usePathname();
 
-  const logout = () => {
-
-  };
+  
 
   return (
     <div className="min-h-screen bg-background">
@@ -197,20 +204,21 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <div className="flex flex-col gap-2">
             {/* <div className="flex items-center gap-2 px-3 py-2 text-sm">
               <div className="flex-1 truncate">
-                <p className="font-medium">admin</p>
                 <p className="text-xs text-muted-foreground capitalize">admin</p>
               </div>
             </div> */}
-            <Button variant="outline" className="w-full flex items-center" onClick={logout}>
-              <LogOut className="mr-2 h-4 w-4" />
-              {!collapsed && <span>Logout</span>}
-            </Button>
-            <Button variant="outline" className="w-full flex items-center" asChild>
+
+
+           
+            {/* View Website Url */}
+             <Button variant="outline" className="w-full flex items-center" asChild>
               <Link href="/">
                 <Coffee className="mr-2 h-4 w-4" />
                 {!collapsed && <span>View Website</span>}
               </Link>
             </Button>
+
+           
           </div>
         </div>
       </div>
@@ -223,11 +231,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         )}
       >
         <header className="h-16 border-b bg-card flex items-center justify-between px-6">
-          <h2 className="font-semibold">Modern Restaurant</h2>
-          <Button variant="ghost" size="sm" onClick={logout}>
-            <LogOut className="w-4 h-4 mr-2" />
-            Log Out
-          </Button>
+          <h2 className="font-semibold">Abc School Nepal</h2>
+              
+               <Logout/>
+             
         </header>
         <main className="p-6">{children}</main>
       </div>

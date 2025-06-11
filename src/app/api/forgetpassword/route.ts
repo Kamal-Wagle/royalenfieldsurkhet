@@ -3,6 +3,7 @@ import User from "@/lib/models/user";
 import connectDB from "@/lib/db";
 import { sendEmail } from "@/lib/emailServices";
 
+// for forget password Send otp to email
 export async function POST(request: NextRequest) {
     try {
         await connectDB();

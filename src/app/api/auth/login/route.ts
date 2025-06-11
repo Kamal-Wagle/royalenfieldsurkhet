@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import User from "@/lib/models/user";
 import connectDB from "@/lib/db";
 
+// Add Admin User
 export async function POST(request: NextRequest) {
   try {
     const reqBody = await request.json();
@@ -17,13 +18,13 @@ export async function POST(request: NextRequest) {
     const user = await User.findOne({ email });
 
     if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 400 });
+      return NextResponse.json({ error: "Invalid credentials ." }, { status: 400 });
     }
 
     // Verify password
     const isMatch = await bcryptjs.compare(password, user.password);
     if (!isMatch) {
-      return NextResponse.json({ error: "Invalid credentials" }, { status: 400 });
+      return NextResponse.json({ error: "Invalid credentials ." }, { status: 400 });
     }
 
     // Create JWT token
@@ -52,6 +53,6 @@ export async function POST(request: NextRequest) {
     if (error instanceof Error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
-    return NextResponse.json({ error: "An unexpected error occurred" }, { status: 500 });
+    return NextResponse.json({ error: "Something Went Wrong ?" }, { status: 500 });
   }
 }

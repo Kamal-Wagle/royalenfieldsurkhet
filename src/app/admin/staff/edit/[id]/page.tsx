@@ -6,21 +6,39 @@ import $axios from "@/lib/axios.instance";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { toast } from "react-hot-toast";
+import Image from "next/image";
+
+// Helper to convert Google Drive view link to direct image preview
+const getDriveImageUrl = (url: string) => {
+  const match = url.match(/\/d\/(.+?)\//);
+  return match ? `https://drive.google.com/uc?export=view&id=${match[1]}` : url;
+};
 
 export default function EditStaffPage() {
   const router = useRouter();
   const { id } = useParams();
-  
+
   const [staff, setStaff] = useState({
     name: "",
     email: "",
     contactNumber: "",
     staffPhoto: "",
     role: "staff",
+    gender: "Male",
+    employmentType: "Full-time",
+    qualifications: "",
   });
 
+  const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -30,7 +48,7 @@ export default function EditStaffPage() {
     async function fetchStaff() {
       try {
         const res = await $axios.get(`/api/staff/${id}`);
-        const data = res.data.staff || res.data; // Adjust API response mapping
+        const data = res.data.staff;
 
         setStaff({
           name: data.name || "",
@@ -38,6 +56,9 @@ export default function EditStaffPage() {
           contactNumber: data.contactNumber || "",
           staffPhoto: data.staffPhoto || "",
           role: data.role || "staff",
+          gender: data.gender || "Male",
+          employmentType: data.employmentType || "Full-time",
+          qualifications: (data.qualifications || []).join(", "),
         });
       } catch (err) {
         console.error("Error fetching staff:", err);
@@ -52,7 +73,41 @@ export default function EditStaffPage() {
 
   const handleUpdate = async () => {
     try {
-      await $axios.put(`/api/staff/${id}`, staff);
+      const base64File = file ? await toBase64(file) : null;
+
+      interface StaffPayload {
+        name: string;
+        email: string;
+        contactNumber: string;
+        staffPhoto: string;
+        role: string;
+        gender: string;
+        employmentType: string;
+        qualifications: string[];
+        file?: {
+          name: string;
+          content: string;
+          mimeType: string;
+        };
+      }
+
+      const payload: StaffPayload = {
+        ...staff,
+        qualifications: staff.qualifications
+          .split(",")
+          .map((q) => q.trim())
+          .filter(Boolean),
+      };
+
+      if (base64File && file) {
+        payload.file = {
+          name: file.name,
+          content: base64File,
+          mimeType: file.type,
+        };
+      }
+
+      await $axios.put(`/api/staff/${id}`, payload);
       toast.success("Staff details updated successfully!");
       router.push("/admin/staff");
     } catch (err) {
@@ -61,8 +116,17 @@ export default function EditStaffPage() {
     }
   };
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p className="text-red-500">{error}</p>;
+  const toBase64 = (file: File) =>
+    new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () =>
+        resolve((reader.result as string).split(",")[1]);
+      reader.onerror = (error) => reject(error);
+    });
+
+  if (loading) return <p className="p-4">Loading...</p>;
+  if (error) return <p className="text-red-500 p-4">{error}</p>;
 
   return (
     <div className="p-8 bg-gray-50 min-h-screen">
@@ -77,7 +141,7 @@ export default function EditStaffPage() {
               value={staff.name}
               onChange={(e) => setStaff({ ...staff, name: e.target.value })}
               placeholder="Enter staff name"
-              className="w-full mt-1"
+              className="mt-1"
             />
           </div>
 
@@ -89,7 +153,7 @@ export default function EditStaffPage() {
               value={staff.email}
               onChange={(e) => setStaff({ ...staff, email: e.target.value })}
               placeholder="Enter staff email"
-              className="w-full mt-1"
+              className="mt-1"
             />
           </div>
 
@@ -99,20 +163,64 @@ export default function EditStaffPage() {
             <Input
               type="tel"
               value={staff.contactNumber}
-              onChange={(e) => setStaff({ ...staff, contactNumber: e.target.value })}
+              onChange={(e) =>
+                setStaff({ ...staff, contactNumber: e.target.value })
+              }
               placeholder="Enter staff contact number"
-              className="w-full mt-1"
+              className="mt-1"
             />
           </div>
 
-          {/* Staff Photo URL */}
+          {/* Gender */}
+          <div className="col-span-1">
+            <Label>Gender</Label>
+            <Select
+              value={staff.gender}
+              onValueChange={(value) =>
+                setStaff({ ...staff, gender: value })
+              }
+            >
+              <SelectTrigger className="mt-1 w-full">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Male">Male</SelectItem>
+                <SelectItem value="Female">Female</SelectItem>
+                <SelectItem value="Other">Other</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Employment Type */}
+          <div className="col-span-1">
+            <Label>Employment Type</Label>
+            <Select
+              value={staff.employmentType}
+              onValueChange={(value) =>
+                setStaff({ ...staff, employmentType: value })
+              }
+            >
+              <SelectTrigger className="mt-1 w-full">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Full-time">Full-time</SelectItem>
+                <SelectItem value="Part-time">Part-time</SelectItem>
+                <SelectItem value="Contract">Contract</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Qualifications */}
           <div className="col-span-2">
-            <Label>Staff Photo URL</Label>
-            <Input
-              value={staff.staffPhoto}
-              onChange={(e) => setStaff({ ...staff, staffPhoto: e.target.value })}
-              placeholder="Enter staff photo URL"
-              className="w-full mt-1"
+            <Label>Qualifications (comma-separated)</Label>
+            <Textarea
+              value={staff.qualifications}
+              onChange={(e) =>
+                setStaff({ ...staff, qualifications: e.target.value })
+              }
+              placeholder="e.g. BSc, MSc, PhD"
+              className="mt-1"
             />
           </div>
 
@@ -123,20 +231,50 @@ export default function EditStaffPage() {
               value={staff.role}
               onValueChange={(value) => setStaff({ ...staff, role: value })}
             >
-              <SelectTrigger className="w-full mt-1">
+              <SelectTrigger className="mt-1 w-full">
                 <SelectValue placeholder="Select Role" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="admin">Admin</SelectItem>
                 <SelectItem value="manager">Manager</SelectItem>
                 <SelectItem value="staff">Staff</SelectItem>
+                <SelectItem value="Professer">Professor</SelectItem>
               </SelectContent>
             </Select>
+          </div>
+
+        <div>
+                  <Image
+                    src={getDriveImageUrl(staff.staffPhoto)}
+                    alt={staff.name}
+                    width={80}
+                    height={80}
+                className="mt-2 h-32 rounded object-cover"
+                  />
+                
+                  </div>
+                
+             
+          {/* Upload New Photo */}
+          <div className="col-span-2">
+            <Label>Upload New Staff Photo</Label>
+            <Input
+              type="file"
+              accept="image/*"
+              className="mt-1"
+              onChange={(e) =>
+                setFile(e.target.files ? e.target.files[0] : null)
+              }
+            />
           </div>
         </div>
 
         {/* Update Button */}
-        <Button onClick={handleUpdate} className="mt-6 w-full bg-blue-600 text-white">
+        <Button
+          onClick={handleUpdate}
+          className="mt-6 w-full bg-blue-600 text-white"
+          disabled={loading}
+        >
           Update Staff
         </Button>
       </div>

@@ -10,7 +10,7 @@ export default function HomeLayout({ children }: { children: React.ReactNode }) 
       <Navbar />
 
       {/* Main content area */}
-      <main className="flex-grow pt-16 px-4 bg-gray-50"> {/* Adjusted padding to push content below the navbar */}
+      <main className=""> {/* Adjusted padding to push content below the navbar */}
         {children}
       </main>
 

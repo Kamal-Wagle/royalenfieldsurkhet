@@ -1,79 +1,110 @@
 'use client';
+import React, { useState } from 'react';
+import $axios from "@/lib/axios.instance";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import Image from 'next/image';
+import ImageDeleteModal from '@/components/ImageDeleteModal';
+import { GalleryImage } from "@/types";
 
-import { Card, CardContent } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogTrigger, DialogTitle } from "@/components/ui/dialog";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import Image from 'next/image'; // Import the Image component from Next.js
 
-const images = [
-  { src: "https://picsum.photos/id/1011/800/600" },
-  { src: "https://picsum.photos/id/1012/800/600" },
-  { src: "https://res.cloudinary.com/dl9zyguda/image/upload/f_auto,q_auto/cld-sample" },
-  { src: "https://picsum.photos/id/1014/800/600" },
-  { src: "https://picsum.photos/id/1015/800/600" },
-  { src: "https://picsum.photos/id/1016/800/600" },
-  { src: "https://picsum.photos/id/1017/800/600" },
-  { src: "https://picsum.photos/id/1018/800/600" },
-  { src: "https://picsum.photos/id/1019/800/600" },
-  { src: "https://picsum.photos/id/1020/800/600" },
-];
 
-export default function Gallery() {
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+const convertDriveLinkToImage = (url: string) => {
+  const match = url.match(/\/d\/(.+?)\//);
+  if (match && match[1]) {
+    return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+  }
+  return url;
+};
 
-  const handleOpenImage = () => {
-    if (selectedImage) {
-      window.open(selectedImage, "_blank");
+const Page = () => {
+  const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const queryClient = useQueryClient();
+
+  // Fetch gallery images
+  const { data: images, isLoading, error } = useQuery<GalleryImage[], Error>({
+    queryKey: ["gallery"],
+    queryFn: async () => {
+      const response = await $axios.get("/api/gallery");
+      return response.data.galleryImages;
+    },
+  });
+
+  // Fetch categories
+  const { data: categories, isLoading: catLoading } = useQuery<string[], Error>({
+    queryKey: ["categories"],
+    queryFn: async () => {
+      const res = await $axios.get("/api/newcategory");
+      return res.data.categories;
+    },
+  });
+
+  const handleDelete = async () => {
+    if (!selectedImage) return;
+    try {
+      setIsDeleting(true);
+      await $axios.delete(`/api/gallery/${selectedImage._id}`);
+      await queryClient.invalidateQueries({ queryKey: ["gallery"] });
+      setSelectedImage(null);
+    } catch {
+      alert("Failed to delete image.");
+    } finally {
+      setIsDeleting(false);
     }
   };
 
+  if (isLoading || catLoading) return <p>Loading...</p>;
+  if (error) return <p>Error loading gallery: {error.message}</p>;
+
   return (
-    <div className="container mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6 text-center">Gallery</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {images.map((image, index) => (
-          <Dialog key={index}>
-            <DialogTrigger asChild>
-              <Card
-                className="overflow-hidden cursor-pointer hover:shadow-lg transition"
-                onClick={() => setSelectedImage(image.src)}
-              >
-                <CardContent className="p-0 h-40">
-                  <Image
-                    src={image.src}
-                    alt={`Gallery Image ${index + 1}`}
-                    className="w-full h-full object-cover"
-                    width={800} // Set width for optimization
-                    height={600} // Set height for optimization
-                  />
-                </CardContent>
-              </Card>
-            </DialogTrigger>
-            <DialogContent className="">
-              <DialogTitle>Image Preview</DialogTitle>
-              <Image
-                src={selectedImage!}
-                alt="Selected"
-                className="w-full h-auto rounded-lg mb-4"
-                width={800} // Set width for optimization
-                height={600} // Set height for optimization
-              />
-              <div className="flex gap-7">
-                <Button onClick={handleOpenImage} className="w-full">
-                  Open Image in New Tab
-                </Button>
-                <Button className="w-full">
-                  Edit Url
-                </Button>
-                <Button className="w-full">
-                  Delete
-                </Button>
-              </div>
-            </DialogContent>
-          </Dialog>
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-4">Gallery</h1>
+
+      {/* Show categories at the top */}
+      <div className="mb-6 flex flex-wrap gap-2">
+        {categories?.map((cat) => (
+          <span
+            key={cat}
+            className="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm shadow"
+          >
+            {cat}
+          </span>
         ))}
       </div>
+
+      {/* Show all images */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+        {images?.map((img) => (
+          <div
+            key={img._id}
+            className="border rounded-lg shadow-sm overflow-hidden cursor-pointer"
+            onClick={() => setSelectedImage(img)}
+          >
+            <Image
+              src={convertDriveLinkToImage(img.src)}
+              alt={img.category}
+              width={500}
+              height={300}
+              className="w-full h-64 object-cover rounded-xl shadow"
+            />
+            <div className="p-2">
+              <p className="text-sm font-semibold">{img.category}</p>
+              <p className="text-xs text-gray-500">
+                {new Date(img.createdAt).toLocaleDateString()}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <ImageDeleteModal
+        image={selectedImage}
+        isDeleting={isDeleting}
+        onClose={() => setSelectedImage(null)}
+        onDelete={handleDelete}
+      />
     </div>
   );
-}
+};
+
+export default Page;
