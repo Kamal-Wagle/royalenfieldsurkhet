@@ -437,9 +437,6 @@ export default function ResultPage() {
               <div className="p-6 border-b border-gray-100 bg-gray-50/50 flex-shrink-0">
                 <div className="flex items-start justify-between">
                   <div className="flex-1 pr-4">
-                     {/* Bottom Close Button */}
-                <div className="mt-8 flex justify-end ">
-                </div>
                     <div className="flex items-center gap-2 mb-3">
                       <Badge className={getClassColor(selectedResult.class)}>
                         <GraduationCap className="h-4 w-4 mr-1.5" />
@@ -557,7 +554,17 @@ export default function ResultPage() {
                   </div>
                 </div>
 
-               
+                {/* Bottom Close Button */}
+                <div className="mt-8 flex justify-center">
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    onClick={() => setSelectedResult(null)}
+                    className="px-8 hover:bg-gray-100"
+                  >
+                    Close Modal
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
