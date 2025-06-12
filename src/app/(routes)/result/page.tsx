@@ -439,14 +439,6 @@ export default function ResultPage() {
                   <div className="flex-1 pr-4">
                      {/* Bottom Close Button */}
                 <div className="mt-8 flex justify-end ">
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    onClick={() => setSelectedResult(null)}
-                    className="px-8 hover:bg-gray-100 bg-red-600"
-                  >
-                    Close
-                  </Button>
                 </div>
                     <div className="flex items-center gap-2 mb-3">
                       <Badge className={getClassColor(selectedResult.class)}>
