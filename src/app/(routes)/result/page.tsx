@@ -431,8 +431,8 @@ export default function ResultPage() {
 
         {/* Result Detail Modal */}
         {selectedResult && (
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center mt-[90px] z-50">
-            <div className="bg-white rounded-xl max-w-4xl w-full h-[90vh] flex flex-col shadow-2xl">
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-start justify-center p-4 z-50">
+            <div className="bg-white rounded-xl max-w-4xl w-full h-[90vh] flex flex-col shadow-2xl mt-4">
               {/* Modal Header */}
               <div className="p-6 border-b border-gray-100 bg-gray-50/50 flex-shrink-0">
                 <div className="flex items-start justify-between">
