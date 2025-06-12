@@ -228,98 +228,79 @@ export default function ResultPage() {
 
       
         {/* Results Table */}
-        <Card>
-          <CardHeader>
+        <Card className="shadow-lg">
+          <CardHeader className="border-b border-gray-100 bg-gray-50/50">
             <CardTitle className="flex items-center justify-between">
-              <span className="flex items-center">
-                <FileText className="h-5 w-5 mr-2" />
+              <span className="flex items-center text-xl">
+                <FileText className="h-6 w-6 mr-3 text-green-600" />
                 All Results ({allFilteredResults.length})
               </span>
-              <div className="text-sm text-gray-600">
+              <div className="text-sm text-gray-600 bg-white px-3 py-1.5 rounded-full border border-gray-200">
                 Showing {startIndex + 1}-{Math.min(endIndex, allFilteredResults.length)} of {allFilteredResults.length}
               </div>
             </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-0">
             <div className="overflow-x-auto">
               <table className="w-full border-collapse">
                 <thead>
-                  <tr className="border-b-2 border-gray-200">
-                    <th className="text-left py-4 px-4 font-semibold text-gray-700">Result Title</th>
-                    <th className="text-left py-4 px-4 font-semibold text-gray-700">Class</th>
-                    <th className="text-left py-4 px-4 font-semibold text-gray-700">Exam Type</th>
-                    <th className="text-left py-4 px-4 font-semibold text-gray-700">Date</th>
-                    <th className="text-left py-4 px-4 font-semibold text-gray-700">Statistics</th>
-                    <th className="text-left py-4 px-4 font-semibold text-gray-700">Actions</th>
+                  <tr className="bg-gray-50">
+                    <th className="text-left py-4 px-6 font-semibold text-gray-700 text-sm uppercase tracking-wider w-1/3">Result Title</th>
+                    <th className="text-left py-4 px-6 font-semibold text-gray-700 text-sm uppercase tracking-wider">Class</th>
+                    <th className="text-left py-4 px-6 font-semibold text-gray-700 text-sm uppercase tracking-wider">Exam Type</th>
+                    <th className="text-left py-4 px-6 font-semibold text-gray-700 text-sm uppercase tracking-wider">Date</th>
+                    <th className="text-left py-4 px-6 font-semibold text-gray-700 text-sm uppercase tracking-wider">Actions</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className="divide-y divide-gray-100">
                   {/* Pinned Results */}
-                  {pinnedResults.map((result, index) => (
+                  {pinnedResults.map((result) => (
                     <tr
                       key={result._id}
-                      className={`border-b border-green-200 bg-green-50 hover:bg-green-100 transition-colors ${index % 2 === 0 ? "" : "bg-green-75"}`}
+                      className="bg-green-50/50 hover:bg-green-100/50 transition-colors duration-150"
                     >
-                      <td className="py-4 px-4">
-                        <div>
+                      <td className="py-5 px-6">
+                        <div className="min-w-[300px]">
                           <div className="flex items-center space-x-2">
-                            <h3 className="font-medium text-green-800">{result.resultTitle}</h3>
-                            {result.isNew && <Badge className="bg-blue-600 text-white text-xs">NEW</Badge>}
+                            <h3 className="font-semibold text-green-800 truncate">{result.resultTitle}</h3>
+                            {result.isNew && <Badge className="bg-blue-600 text-white text-xs px-2 py-0.5 rounded-full shrink-0">NEW</Badge>}
+                            <Badge className="bg-green-600 text-white text-xs px-2 py-0.5 rounded-full shrink-0">PINNED</Badge>
                           </div>
-                          <p className="text-sm text-green-700 mt-1">{result?.descprition}</p>
-                          <p className="text-xs text-green-600 mt-1">Session: {result.session}</p>
+                          <p className="text-sm text-green-700 mt-1.5 line-clamp-2">{result?.descprition}</p>
+                          <p className="text-xs text-green-600 mt-1.5 flex items-center">
+                            <Calendar className="h-3 w-3 mr-1" />
+                            Session: {result.session}
+                          </p>
                         </div>
                       </td>
-                      <td className="py-4 px-4">
-                        <Badge className={getClassColor(result.class)}>
-                          <GraduationCap className="h-3 w-3 mr-1" />
+                      <td className="py-5 px-6">
+                        <Badge className={`${getClassColor(result.class)} px-3 py-1.5 rounded-full`}>
+                          <GraduationCap className="h-4 w-4 mr-1.5" />
                           {result.class}
                         </Badge>
                       </td>
-                      <td className="py-4 px-4">
-                        <Badge className={getExamTypeColor(result.examType)}>
-                          <Tag className="h-3 w-3 mr-1" />
+                      <td className="py-5 px-6">
+                        <Badge className={`${getExamTypeColor(result.examType)} px-3 py-1.5 rounded-full`}>
+                          <Tag className="h-4 w-4 mr-1.5" />
                           {result.examType}
                         </Badge>
                       </td>
-                      <td className="py-4 px-4">
+                      <td className="py-5 px-6">
                         <div className="flex items-center text-gray-600">
-                          <Calendar className="h-4 w-4 mr-2" />
-                          {new Date(result.createdAt).toLocaleDateString()}
+                          <Calendar className="h-4 w-4 mr-2 text-gray-500" />
+                          <span className="text-sm">{new Date(result.createdAt).toLocaleDateString()}</span>
                         </div>
                       </td>
-                      <td className="py-4 px-4">
-                        <div className="space-y-1">
-                          <div className="flex items-center text-sm">
-                            <Users className="h-3 w-3 mr-1 text-gray-500" />
-                            <span className="text-gray-600">{result.totalStudents || 'N/A'} Students</span>
-                          </div>
-                          <div className="flex items-center text-sm">
-                            <Trophy className="h-3 w-3 mr-1 text-gray-500" />
-                            <span className={`font-semibold ${getPassPercentageColor(result.passPercentage || 0)}`}>
-                              {result.passPercentage || 'N/A'}% Pass
-                            </span>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="py-4 px-4">
+                      <td className="py-5 px-6">
                         <div className="flex space-x-2">
                           <Button
                             size="sm"
                             variant="outline"
                             onClick={() => setSelectedResult(result)}
-                            className="hover:bg-blue-50 hover:text-blue-700"
+                            className="hover:bg-blue-50 hover:text-blue-700 border-gray-200"
                           >
-                            <Eye className="h-4 w-4 mr-1" />
+                            <Eye className="h-4 w-4 mr-1.5" />
                             View
-                          </Button>
-                          <Button 
-                            size="sm" 
-                            className="bg-green-600 hover:bg-green-700 text-white"
-                            onClick={() => window.open(result.link, '_blank')}
-                          >
-                            <Download className="h-4 w-4 mr-1" />
-                            PDF
                           </Button>
                         </div>
                       </td>
@@ -327,71 +308,52 @@ export default function ResultPage() {
                   ))}
 
                   {/* Regular Results */}
-                  {regularResults.map((result, index) => (
+                  {regularResults.map((result) => (
                     <tr
                       key={result._id}
-                      className={`border-b border-gray-100 hover:bg-gray-50 transition-colors ${index % 2 === 0 ? "bg-white" : "bg-gray-25"}`}
+                      className="hover:bg-gray-50 transition-colors duration-150"
                     >
-                      <td className="py-4 px-4">
-                        <div>
+                      <td className="py-5 px-6">
+                        <div className="min-w-[300px]">
                           <div className="flex items-center space-x-2">
-                            <h3 className="font-medium text-gray-900">{result.resultTitle}</h3>
-                            {result.isNew && <Badge className="bg-blue-600 text-white text-xs">NEW</Badge>}
+                            <h3 className="font-semibold text-gray-900 truncate">{result.resultTitle}</h3>
+                            {result.isNew && <Badge className="bg-blue-600 text-white text-xs px-2 py-0.5 rounded-full shrink-0">NEW</Badge>}
                           </div>
-                          <p className="text-sm text-gray-600 mt-1">{result.statistics}</p>
-                          <p className="text-xs text-gray-500 mt-1">Session: {result.session}</p>
+                          <p className="text-sm text-gray-600 mt-1.5 line-clamp-2">{result?.descprition}</p>
+                          <p className="text-xs text-gray-500 mt-1.5 flex items-center">
+                            <Calendar className="h-3 w-3 mr-1" />
+                            Session: {result.session}
+                          </p>
                         </div>
                       </td>
-                      <td className="py-4 px-4">
-                        <Badge className={getClassColor(result.class)}>
-                          <GraduationCap className="h-3 w-3 mr-1" />
+                      <td className="py-5 px-6">
+                        <Badge className={`${getClassColor(result.class)} px-3 py-1.5 rounded-full`}>
+                          <GraduationCap className="h-4 w-4 mr-1.5" />
                           {result.class}
                         </Badge>
                       </td>
-                      <td className="py-4 px-4">
-                        <Badge className={getExamTypeColor(result.examType)}>
-                          <Tag className="h-3 w-3 mr-1" />
+                      <td className="py-5 px-6">
+                        <Badge className={`${getExamTypeColor(result.examType)} px-3 py-1.5 rounded-full`}>
+                          <Tag className="h-4 w-4 mr-1.5" />
                           {result.examType}
                         </Badge>
                       </td>
-                      <td className="py-4 px-4">
+                      <td className="py-5 px-6">
                         <div className="flex items-center text-gray-600">
-                          <Calendar className="h-4 w-4 mr-2" />
-                          {new Date(result.createdAt).toLocaleDateString()}
+                          <Calendar className="h-4 w-4 mr-2 text-gray-500" />
+                          <span className="text-sm">{new Date(result.createdAt).toLocaleDateString()}</span>
                         </div>
                       </td>
-                      <td className="py-4 px-4">
-                        <div className="space-y-1">
-                          <div className="flex items-center text-sm">
-                            <Users className="h-3 w-3 mr-1 text-gray-500" />
-                            <span className="text-gray-600">{result.totalStudents || 'N/A'} Students</span>
-                          </div>
-                          <div className="flex items-center text-sm">
-                            <Trophy className="h-3 w-3 mr-1 text-gray-500" />
-                            <span className={`font-semibold ${getPassPercentageColor(result.passPercentage || 0)}`}>
-                              {result.passPercentage || 'N/A'}% Pass
-                            </span>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="py-4 px-4">
+                      <td className="py-5 px-6">
                         <div className="flex space-x-2">
                           <Button
                             size="sm"
                             variant="outline"
                             onClick={() => setSelectedResult(result)}
-                            className="hover:bg-blue-50 hover:text-blue-700"
+                            className="hover:bg-blue-50 hover:text-blue-700 border-gray-200"
                           >
-                            <Eye className="h-4 w-4 mr-1" />
+                            <Eye className="h-4 w-4 mr-1.5" />
                             View
-                          </Button>
-                          <Button 
-                            size="sm" 
-                            className="bg-green-600 hover:bg-green-700 text-white"
-                            onClick={() => window.open(result.link, '_blank')}
-                          >
-                            <Download className="h-4 w-4 mr-1" />
-                            PDF
                           </Button>
                         </div>
                       </td>
@@ -402,7 +364,7 @@ export default function ResultPage() {
             </div>
 
             {filteredResults.length === 0 && (
-              <div className="text-center py-12">
+              <div className="text-center py-16">
                 <Trophy className="h-16 w-16 text-gray-300 mx-auto mb-4" />
                 <h3 className="text-lg font-medium text-gray-900 mb-2">No results found</h3>
                 <p className="text-gray-600">Try adjusting your search or filter criteria.</p>
@@ -469,58 +431,125 @@ export default function ResultPage() {
 
         {/* Result Detail Modal */}
         {selectedResult && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-              <div className="p-6 border-b border-gray-200">
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+            <div className="bg-white rounded-xl max-w-4xl w-full h-[90vh] flex flex-col shadow-2xl">
+              {/* Modal Header */}
+              <div className="p-6 border-b border-gray-100 bg-gray-50/50 flex-shrink-0">
                 <div className="flex items-start justify-between">
-                  <div>
-                    <h2 className="text-2xl font-bold text-gray-900 mb-2">{selectedResult.resultTitle}</h2>
-                    <div className="flex items-center space-x-4 mb-4">
-                      <Badge className={getClassColor(selectedResult.class)}>{selectedResult.class}</Badge>
-                      <Badge className={getExamTypeColor(selectedResult.examType)}>{selectedResult.examType}</Badge>
-                      <div className="flex items-center text-gray-600">
-                        <Calendar className="h-4 w-4 mr-1" />
-                        {new Date(selectedResult.createdAt).toLocaleDateString()}
-                      </div>
+                  <div className="flex-1 pr-4">
+                     {/* Bottom Close Button */}
+                <div className="mt-8 flex justify-end ">
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    onClick={() => setSelectedResult(null)}
+                    className="px-8 hover:bg-gray-100 bg-red-600"
+                  >
+                    Close
+                  </Button>
+                </div>
+                    <div className="flex items-center gap-2 mb-3">
+                      <Badge className={getClassColor(selectedResult.class)}>
+                        <GraduationCap className="h-4 w-4 mr-1.5" />
+                        {selectedResult.class}
+                      </Badge>
+                      <Badge className={getExamTypeColor(selectedResult.examType)}>
+                        <Tag className="h-4 w-4 mr-1.5" />
+                        {selectedResult.examType}
+                      </Badge>
+                      {selectedResult.isNew && (
+                        <Badge className="bg-blue-600 text-white">NEW</Badge>
+                      )}
                     </div>
-                    <div className="grid grid-cols-2 gap-4 text-sm">
-                      <div className="flex items-center">
-                        <Users className="h-4 w-4 mr-2 text-gray-500" />
-                        <span>
-                          Total Students: <strong>{selectedResult.totalStudents || 'N/A'}</strong>
-                        </span>
-                      </div>
-                      <div className="flex items-center">
-                        <Trophy className="h-4 w-4 mr-2 text-gray-500" />
-                        <span className={getPassPercentageColor(selectedResult.passPercentage || 0)}>
-                          Pass Percentage: <strong>{selectedResult.passPercentage || 'N/A'}%</strong>
-                        </span>
-                      </div>
+                    <h2 className="text-2xl font-bold text-gray-900 mb-2">{selectedResult.resultTitle}</h2>
+                    <div className="flex items-center text-gray-600 text-sm">
+                      <Calendar className="h-4 w-4 mr-2" />
+                      {new Date(selectedResult.createdAt).toLocaleDateString()}
+                      <span className="mx-2">•</span>
+                      <span>Session: {selectedResult.session}</span>
                     </div>
                   </div>
                   <Button
-                    variant="outline"
+                    variant="ghost"
+                    size="icon"
                     onClick={() => setSelectedResult(null)}
-                    className="text-gray-500 hover:text-gray-700"
+                    className="h-8 w-8 rounded-full hover:bg-gray-100"
                   >
-                    ✕
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="h-4 w-4"
+                    >
+                      <path d="M18 6 6 18" />
+                      <path d="m6 6 12 12" />
+                    </svg>
                   </Button>
                 </div>
               </div>
 
-              <div className="p-6">
-                <p className="text-gray-700 mb-6">{selectedResult.statistics}</p>
+              {/* Modal Content */}
+              <div className="flex-1 overflow-y-auto p-6">
+                {/* Statistics Cards */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                  <div className="bg-white rounded-lg border border-gray-100 p-4 shadow-sm">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center text-gray-600">
+                        <Users className="h-5 w-5 mr-2" />
+                        <span className="font-medium">Total Students</span>
+                      </div>
+                      <span className="text-2xl font-bold text-gray-900">
+                        {selectedResult.totalStudents || 'N/A'}
+                      </span>
+                    </div>
+                    <div className="h-1 bg-gray-100 rounded-full overflow-hidden">
+                      <div className="h-full bg-blue-500 rounded-full" style={{ width: '100%' }}></div>
+                    </div>
+                  </div>
 
-                {/* PDF Preview Placeholder */}
-                <div className="bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg p-12 text-center">
+                  <div className="bg-white rounded-lg border border-gray-100 p-4 shadow-sm">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center text-gray-600">
+                        <Trophy className="h-5 w-5 mr-2" />
+                        <span className="font-medium">Pass Percentage</span>
+                      </div>
+                      <span className={`text-2xl font-bold ${getPassPercentageColor(selectedResult.passPercentage || 0)}`}>
+                        {selectedResult.passPercentage || 'N/A'}%
+                      </span>
+                    </div>
+                    <div className="h-1 bg-gray-100 rounded-full overflow-hidden">
+                      <div 
+                        className={`h-full rounded-full ${getPassPercentageColor(selectedResult.passPercentage || 0).replace('text', 'bg')}`}
+                        style={{ width: `${selectedResult.passPercentage || 0}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Description */}
+                {selectedResult.descprition && (
+                  <div className="mb-6">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Description</h3>
+                    <p className="text-gray-600 leading-relaxed">{selectedResult.descprition}</p>
+                  </div>
+                )}
+
+                {/* PDF Preview */}
+                <div className="bg-gray-50 rounded-xl border-2 border-dashed border-gray-200 p-8 text-center">
                   <FileText className="h-16 w-16 text-gray-400 mx-auto mb-4" />
                   <h3 className="text-lg font-medium text-gray-900 mb-2">Result PDF Document</h3>
-                  <p className="text-gray-600 mb-4">
+                  <p className="text-gray-600 mb-6 max-w-md mx-auto">
                     Click the button below to view or download the complete result sheet
                   </p>
-                  <div className="flex justify-center space-x-4">
+                  <div className="flex flex-col sm:flex-row justify-center gap-4">
                     <Button 
-                      className="bg-green-600 hover:bg-green-700 text-white"
+                      className="bg-green-600 hover:bg-green-700 text-white shadow-sm"
                       onClick={() => window.open(selectedResult.link, '_blank')}
                     >
                       <Eye className="h-4 w-4 mr-2" />
@@ -535,6 +564,8 @@ export default function ResultPage() {
                     </Button>
                   </div>
                 </div>
+
+               
               </div>
             </div>
           </div>
