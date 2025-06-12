@@ -24,10 +24,10 @@ const page = () => {
     <>
       <main className="min-h-screen bg-white">
         {/* Hero Section */}
-        <section className="relative h-[600px] bg-gradient-to-r from-green-900 via-emerald-800 to-teal-700 overflow-hidden">
+        <section className="relative h-[600px] bg-gradient-to-r from-green-900 via-emerald-800 to-teal-700 overflow-hidden mt-1">
           <div className="absolute inset-0">
             <Image
-              src="/placeholder.svg?height=1080&width=1920"
+              src="https://media.istockphoto.com/id/171306436/photo/red-brick-high-school-building-exterior.jpg?s=612x612&w=0&k=20&c=vksDyCVrfCpvb9uk4-wcBYu6jbTZ3nCOkGHPSgNy-L0="
               alt="Students enjoying school life"
               fill
               className="object-cover opacity-20"

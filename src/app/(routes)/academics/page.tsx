@@ -37,7 +37,7 @@ const page = () => {
     <>
       <main className="min-h-screen bg-white">
         {/* Hero Section */}
-        <section className="relative h-[600px] bg-gradient-to-r from-purple-900 via-blue-800 to-indigo-700 overflow-hidden">
+        <section className="relative h-[600px] bg-gradient-to-r from-purple-900 via-blue-800 to-indigo-700 overflow-hidden mt-1">
           <div className="absolute inset-0">
             <Image
               src="/placeholder.svg?height=1080&width=1920"

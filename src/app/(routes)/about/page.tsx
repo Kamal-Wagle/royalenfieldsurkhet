@@ -31,7 +31,7 @@ const page = () => {
         <section className="relative h-[500px] bg-gradient-to-r from-blue-900 via-blue-800 to-blue-700 overflow-hidden">
           <div className="absolute inset-0">
             <Image
-              src="/placeholder.svg?height=800&width=1920"
+              src="https://media.istockphoto.com/id/171306436/photo/red-brick-high-school-building-exterior.jpg?s=612x612&w=0&k=20&c=vksDyCVrfCpvb9uk4-wcBYu6jbTZ3nCOkGHPSgNy-L0="
               alt="School campus"
               fill
               className="object-cover opacity-20"
@@ -66,10 +66,10 @@ const page = () => {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="border-white text-white hover:bg-white hover:text-blue-800 text-lg px-8 py-4 transform hover:scale-105 transition-all duration-200"
+                  className="border-white text-black hover:bg-white hover:text-blue-800 text-lg px-8 py-4 transform hover:scale-105 transition-all duration-200"
                 >
                   <Eye className="mr-2 h-5 w-5" />
-                  Virtual Tour
+                  About Us
                 </Button>
               </div>
             </div>

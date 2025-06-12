@@ -11,7 +11,6 @@ import {
   Building,
   Clock,
   ChevronRight,
-  Play,
   Lightbulb,
   Laptop,
   Music,
@@ -42,134 +41,133 @@ export default function Home() {
       <Navbar />
       <main className="min-h-screen bg-white">
         {/* Hero Section */}
-        <section className="relative h-[700px] bg-gradient-to-r from-blue-900 via-blue-800 to-blue-700 overflow-hidden">
-          {/* Animated Background Elements */}
-          <div className="absolute inset-0">
-            <Image
-              src="/placeholder.svg?height=1080&width=1920"
-              alt="School building"
-              fill
-              className="object-cover opacity-20"
-              priority
-            />
-            {/* Floating Geometric Shapes */}
-            <div className="absolute top-20 left-10 w-20 h-20 bg-yellow-400 rounded-full opacity-20 animate-bounce"></div>
-            <div className="absolute top-40 right-20 w-16 h-16 bg-white rounded-full opacity-10 animate-pulse"></div>
-            <div className="absolute bottom-32 left-20 w-12 h-12 bg-yellow-300 rotate-45 opacity-15 animate-spin"></div>
-            <div className="absolute top-60 right-40 w-8 h-8 bg-white rounded-full opacity-20 animate-ping"></div>
-          </div>
+        <section className="relative min-h-[600px] md:min-h-[700px] bg-gradient-to-r from-blue-900 via-blue-800 to-blue-700 overflow-hidden">
+  {/* Animated Background Elements */}
+  <div className="absolute inset-0">
+    <Image
+              src="https://media.istockphoto.com/id/171306436/photo/red-brick-high-school-building-exterior.jpg?s=612x612&w=0&k=20&c=vksDyCVrfCpvb9uk4-wcBYu6jbTZ3nCOkGHPSgNy-L0="
+      alt="School building"
+      fill
+      className="object-cover opacity-20"
+      priority
+    />
+    {/* Floating Geometric Shapes */}
+    <div className="absolute top-10 left-4 w-10 h-10 md:w-20 md:h-20 bg-yellow-400 rounded-full opacity-20 animate-bounce"></div>
+    <div className="absolute top-24 right-4 w-8 h-8 md:w-16 md:h-16 bg-white rounded-full opacity-10 animate-pulse"></div>
+    <div className="absolute bottom-20 left-8 w-6 h-6 md:w-12 md:h-12 bg-yellow-300 rotate-45 opacity-15 animate-spin"></div>
+    <div className="absolute top-48 right-10 w-4 h-4 md:w-8 md:h-8 bg-white rounded-full opacity-20 animate-ping"></div>
+  </div>
 
-          <div className="relative container mx-auto px-4 h-full flex items-center">
-            <div className="grid lg:grid-cols-2 gap-12 items-center w-full">
-              {/* Left Content */}
-              <div className="text-white">
-                <div className="inline-block bg-yellow-500 text-black px-4 py-2 rounded-full text-sm font-medium mb-4 animate-pulse">
-                  🎓 Admissions Open for 2025-26
-                </div>
-                <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-                  Welcome to <span className="text-yellow-300 animate-pulse">Surya Prakash</span> Secondary School
-                </h1>
-                <p className="text-xl md:text-2xl mb-8 text-blue-100 leading-relaxed">
-                  Providing quality education in Panchapuri, Surkhet since 1943. Nurturing young minds from Nursery to
-                  Grade 12 with excellence and care.
-                </p>
+  <div className="relative container mx-auto px-4 h-full flex items-center py-12 sm:py-16">
+    <div className="grid lg:grid-cols-2 gap-12 items-center w-full">
+      {/* Left Content */}
+      <div className="text-white text-center lg:text-left">
+        <div className="inline-block bg-yellow-500 text-black px-4 py-2 rounded-full text-xs sm:text-sm font-medium mb-4 animate-pulse">
+          🎓 Admissions Open for 2025-26
+        </div>
+        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+          Welcome to <span className="text-yellow-300 animate-pulse">Surya Prakash</span> Secondary School
+        </h1>
+        <p className="text-lg sm:text-xl md:text-2xl mb-8 text-blue-100 leading-relaxed">
+          Providing quality education in Panchapuri, Surkhet since 1943. Nurturing young minds from Nursery to
+          Grade 12 with excellence and care.
+        </p>
 
-                {/* Quick Stats */}
-                <div className="grid grid-cols-3 gap-4 mb-8">
-                  <div className="text-center bg-white/10 backdrop-blur-sm rounded-lg p-3 hover:bg-white/20 transition-all duration-300 transform hover:scale-105">
-                    <div className="text-2xl font-bold text-yellow-300">80+</div>
-                    <div className="text-sm text-blue-200">Years</div>
-                  </div>
-                  <div className="text-center bg-white/10 backdrop-blur-sm rounded-lg p-3 hover:bg-white/20 transition-all duration-300 transform hover:scale-105">
-                    <div className="text-2xl font-bold text-yellow-300">1200+</div>
-                    <div className="text-sm text-blue-200">Students</div>
-                  </div>
-                  <div className="text-center bg-white/10 backdrop-blur-sm rounded-lg p-3 hover:bg-white/20 transition-all duration-300 transform hover:scale-105">
-                    <div className="text-2xl font-bold text-yellow-300">95%</div>
-                    <div className="text-sm text-blue-200">Pass Rate</div>
-                  </div>
-                </div>
+        {/* Quick Stats */}
+        <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-8">
+          {[
+            { label: "Years", value: "80+" },
+            { label: "Students", value: "1200+" },
+            { label: "Pass Rate", value: "95%" },
+          ].map((item, idx) => (
+            <div key={idx} className="text-center bg-white/10 backdrop-blur-sm rounded-lg p-3 hover:bg-white/20 transition-all duration-300 transform hover:scale-105">
+              <div className="text-xl sm:text-2xl font-bold text-yellow-300">{item.value}</div>
+              <div className="text-xs sm:text-sm text-blue-200">{item.label}</div>
+            </div>
+          ))}
+        </div>
 
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Button
-                    size="lg"
-                    className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold text-lg px-8 py-4 transform hover:scale-105 transition-all duration-200 hover:shadow-lg"
-                  >
-                    Apply for Admission <ChevronRight className="ml-2 h-5 w-5" />
-                  </Button>
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="border-white text-white hover:bg-white hover:text-blue-800 text-lg px-8 py-4 transform hover:scale-105 transition-all duration-200 hover:shadow-lg"
-                  >
-                    <Play className="mr-2 h-5 w-5" />
-                    Virtual School Tour
-                  </Button>
-                </div>
-              </div>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+          <Button
+            size="lg"
+            className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold text-lg px-6 py-3 md:px-8 md:py-4 transform hover:scale-105 transition-all duration-200 hover:shadow-lg"
+          >
+            Apply for Admission <ChevronRight className="ml-2 h-5 w-5" />
+          </Button>
+          <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-white text-black hover:bg-white hover:text-blue-800 text-lg px-8 py-4 transform hover:scale-105 transition-all duration-200"
+                >
+                  <Eye className="mr-2 h-5 w-5" />
+                  About Us
+                </Button>
+        </div>
+      </div>
 
-              {/* Right Content - Floating Achievement Cards */}
-              <div className="relative hidden lg:block">
-                {/* Main Achievement Card */}
-                <div className="bg-white rounded-2xl p-6 shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-300 hover:shadow-3xl">
-                  <div className="flex items-center mb-4">
-                    <div className="bg-blue-100 p-3 rounded-full mr-4">
-                      <Award className="h-8 w-8 text-blue-600" />
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-gray-800">Excellence Award</h3>
-                      <p className="text-gray-600 text-sm">Best School in Surkhet</p>
-                    </div>
-                  </div>
-                  <p className="text-gray-600">
-                    Recognized for outstanding academic performance and student development.
-                  </p>
-                </div>
-
-                {/* Floating Cards */}
-                <div className="absolute -top-8 -right-8 bg-yellow-400 rounded-xl p-4 shadow-lg transform -rotate-12 hover:rotate-0 transition-transform duration-300 hover:shadow-xl">
-                  <div className="text-center">
-                    <GraduationCap className="h-8 w-8 text-white mx-auto mb-2" />
-                    <div className="font-bold text-white">2000+</div>
-                    <div className="text-xs text-yellow-100">Alumni</div>
-                  </div>
-                </div>
-
-                <div className="absolute -bottom-4 -left-4 bg-green-500 rounded-xl p-4 shadow-lg transform rotate-12 hover:rotate-0 transition-transform duration-300 hover:shadow-xl">
-                  <div className="text-center">
-                    <Trophy className="h-8 w-8 text-white mx-auto mb-2" />
-                    <div className="font-bold text-white">50+</div>
-                    <div className="text-xs text-green-100">Awards</div>
-                  </div>
-                </div>
-
-                <div className="absolute top-1/2 -right-12 bg-purple-500 rounded-full p-4 shadow-lg animate-bounce hover:animate-pulse">
-                  <BookOpen className="h-6 w-6 text-white" />
-                </div>
-              </div>
+      {/* Right Content - Floating Achievement Cards */}
+      <div className="relative hidden lg:block">
+        {/* Main Achievement Card */}
+        <div className="bg-white rounded-2xl p-6 shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-300 hover:shadow-3xl">
+          <div className="flex items-center mb-4">
+            <div className="bg-blue-100 p-3 rounded-full mr-4">
+              <Award className="h-8 w-8 text-blue-600" />
+            </div>
+            <div>
+              <h3 className="font-bold text-gray-800">Excellence Award</h3>
+              <p className="text-gray-600 text-sm">Best School in Surkhet</p>
             </div>
           </div>
+          <p className="text-gray-600">
+            Recognized for outstanding academic performance and student development.
+          </p>
+        </div>
 
-          {/* Scroll Indicator */}
-          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white animate-bounce">
-            <div className="flex flex-col items-center">
-              <span className="text-sm mb-2">Scroll to explore</span>
-              <div className="w-6 h-10 border-2 border-white rounded-full flex justify-center">
-                <div className="w-1 h-3 bg-white rounded-full mt-2 animate-pulse"></div>
-              </div>
-            </div>
+        {/* Floating Cards */}
+        <div className="absolute -top-8 -right-8 bg-yellow-400 rounded-xl p-4 shadow-lg transform -rotate-12 hover:rotate-0 transition-transform duration-300 hover:shadow-xl">
+          <div className="text-center">
+            <GraduationCap className="h-8 w-8 text-white mx-auto mb-2" />
+            <div className="font-bold text-white">2000+</div>
+            <div className="text-xs text-yellow-100">Alumni</div>
           </div>
+        </div>
 
-          {/* Decorative Wave */}
-          <div className="absolute bottom-0 left-0 w-full">
-            <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="relative block w-full h-16">
-              <path
-                d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
-                className="fill-white"
-              ></path>
-            </svg>
+        <div className="absolute -bottom-4 -left-4 bg-green-500 rounded-xl p-4 shadow-lg transform rotate-12 hover:rotate-0 transition-transform duration-300 hover:shadow-xl">
+          <div className="text-center">
+            <Trophy className="h-8 w-8 text-white mx-auto mb-2" />
+            <div className="font-bold text-white">50+</div>
+            <div className="text-xs text-green-100">Awards</div>
           </div>
-        </section>
+        </div>
+
+        <div className="absolute top-1/2 -right-12 bg-purple-500 rounded-full p-4 shadow-lg animate-bounce hover:animate-pulse">
+          <BookOpen className="h-6 w-6 text-white" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {/* Scroll Indicator */}
+  <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 text-white animate-bounce">
+    <div className="flex flex-col items-center">
+      <span className="text-xs sm:text-sm mb-2">Scroll to explore</span>
+      <div className="w-5 h-9 border-2 border-white rounded-full flex justify-center">
+        <div className="w-1 h-2 bg-white rounded-full mt-2 animate-pulse"></div>
+      </div>
+    </div>
+  </div>
+
+  {/* Decorative Wave */}
+  <div className="absolute bottom-0 left-0 w-full">
+    <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="relative block w-full h-12 md:h-16">
+      <path
+        d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
+        className="fill-white"
+      ></path>
+    </svg>
+  </div>
+</section>
+
 
         {/* Announcement Bar */}
         <section className="bg-gradient-to-r from-yellow-100 to-yellow-50 py-4 border-y border-yellow-200 relative overflow-hidden">

@@ -363,7 +363,6 @@
 // }
 
 
-
 "use client"
 
 import { useState } from "react"
@@ -378,7 +377,7 @@ export default function Navbar() {
     <>
       {/* Top Info Bar */}
       <div className="bg-blue-800 text-white py-2 hidden md:block">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-2">
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-4">
               <div className="flex items-center">
@@ -407,7 +406,7 @@ export default function Navbar() {
 
       {/* Main Navbar */}
       <nav className="bg-white shadow-lg sticky top-0 z-50">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-2">
           <div className="flex justify-between items-center h-20">
             {/* Logo */}
             <Link href="/" className="flex items-center space-x-3">
@@ -415,22 +414,32 @@ export default function Navbar() {
                 <BookOpen className="h-7 w-7 text-white" />
               </div>
               <div>
-                <h1 className="font-bold text-xl md:text-2xl text-gray-800">Surya Prakash Secondary School</h1>
+                <h1 className="font-bold text-base md:text-xl lg:text-2xl text-gray-800">Surya Prakash Secondary School</h1>
                 <p className="text-xs md:text-sm text-gray-500">Excellence in Education Since 1943</p>
               </div>
             </Link>
 
             {/* Desktop Menu */}
             <div className="hidden lg:flex items-center space-x-1">
-              <Link href="/" className="px-3 py-2 text-blue-700 hover:bg-blue-50 rounded-md font-medium transition-colors">Home</Link>
-              <Link href="/about" className="px-3 py-2 text-blue-700 hover:bg-blue-50 rounded-md font-medium transition-colors">About</Link>
-              <Link href="/academics" className="px-3 py-2 text-blue-700 hover:bg-blue-50 rounded-md font-medium transition-colors">Academics</Link>
-              <Link href="/student-life" className="px-3 py-2 text-blue-700 hover:bg-blue-50 rounded-md font-medium transition-colors">Student Life</Link>
-              <Link href="/news" className="px-3 py-2 text-blue-700 hover:bg-blue-50 rounded-md font-medium transition-colors">News & Events</Link>
-              <Link href="/gallery" className="px-3 py-2 text-blue-700 hover:bg-blue-50 rounded-md font-medium transition-colors">Gallery</Link>
-              <Link href="/contact" className="px-3 py-2 text-blue-700 hover:bg-blue-50 rounded-md font-medium transition-colors">Contact</Link>
-              <Link href="/notice" className="px-3 py-2 text-blue-700 hover:bg-blue-50 rounded-md font-medium transition-colors">Notice</Link>
-              <Link href="/result" className="px-3 py-2 text-blue-700 hover:bg-blue-50 rounded-md font-medium transition-colors">Result</Link>
+              {[
+                { href: "/", label: "Home" },
+                { href: "/about", label: "About" },
+                { href: "/academics", label: "Academics" },
+                { href: "/student-life", label: "Student Life" },
+                { href: "/news", label: "News & Events" },
+                { href: "/gallery", label: "Gallery" },
+                { href: "/contact", label: "Contact" },
+                { href: "/notice", label: "Notice" },
+                { href: "/result", label: "Result" },
+              ].map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="px-2 py-2 text-sm md:text-base lg:text-sm xl:text-base text-blue-700 hover:bg-blue-50 rounded-md font-medium transition-colors"
+                >
+                  {item.label}
+                </Link>
+              ))}
             </div>
 
             {/* Mobile Menu Button */}
@@ -447,15 +456,26 @@ export default function Navbar() {
           {/* Mobile Navigation */}
           {isMenuOpen && (
             <div className="lg:hidden py-4 space-y-2 border-t">
-              <Link href="/" onClick={() => setIsMenuOpen(false)} className="block py-2 px-4 text-blue-700 hover:bg-blue-50 rounded-md">Home</Link>
-              <Link href="/about" onClick={() => setIsMenuOpen(false)} className="block py-2 px-4 text-blue-700 hover:bg-blue-50 rounded-md">About</Link>
-              <Link href="/academics" onClick={() => setIsMenuOpen(false)} className="block py-2 px-4 text-blue-700 hover:bg-blue-50 rounded-md">Academics</Link>
-              <Link href="/student-life" onClick={() => setIsMenuOpen(false)} className="block py-2 px-4 text-blue-700 hover:bg-blue-50 rounded-md">Student Life</Link>
-              <Link href="/news" onClick={() => setIsMenuOpen(false)} className="block py-2 px-4 text-blue-700 hover:bg-blue-50 rounded-md">News & Events</Link>
-              <Link href="/gallery" onClick={() => setIsMenuOpen(false)} className="block py-2 px-4 text-blue-700 hover:bg-blue-50 rounded-md">Gallery</Link>
-              <Link href="/contact" onClick={() => setIsMenuOpen(false)} className="block py-2 px-4 text-blue-700 hover:bg-blue-50 rounded-md">Contact</Link>
-              <Link href="/notice" onClick={() => setIsMenuOpen(false)} className="block py-2 px-4 text-blue-700 hover:bg-blue-50 rounded-md">Notice</Link>
-              <Link href="/result" onClick={() => setIsMenuOpen(false)} className="block py-2 px-4 text-blue-700 hover:bg-blue-50 rounded-md">Result</Link>
+              {[
+                { href: "/", label: "Home" },
+                { href: "/about", label: "About" },
+                { href: "/academics", label: "Academics" },
+                { href: "/student-life", label: "Student Life" },
+                { href: "/news", label: "News & Events" },
+                { href: "/gallery", label: "Gallery" },
+                { href: "/contact", label: "Contact" },
+                { href: "/notice", label: "Notice" },
+                { href: "/result", label: "Result" },
+              ].map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setIsMenuOpen(false)}
+                  className="block py-2 px-4 text-blue-700 hover:bg-blue-50 rounded-md"
+                >
+                  {item.label}
+                </Link>
+              ))}
 
               <div className="pt-4 px-4">
                 <Button className="w-full bg-blue-600 hover:bg-blue-700">Apply Now</Button>
@@ -467,4 +487,3 @@ export default function Navbar() {
     </>
   )
 }
-
