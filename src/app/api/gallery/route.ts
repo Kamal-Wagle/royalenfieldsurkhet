@@ -78,8 +78,9 @@ export async function POST(req: Request) {
 
     const category = formData.get("category") as string | null;
     const imageFile = formData.get("image") as File | null;
+    const title = formData.get("title") as string | null;
 
-    if (!category || !imageFile) {
+    if (!category || !imageFile || !title) {
       return NextResponse.json(
         { error: "Missing required fields: category or image" },
         { status: 400 }
@@ -93,6 +94,7 @@ export async function POST(req: Request) {
     const newImage = await Gallery.create({
       src: uploaded.link,
       category,
+      title,
       createdAt: new Date(),
       fileId: uploaded.id, // optional to store Drive file ID
     });

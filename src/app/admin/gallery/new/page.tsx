@@ -1,41 +1,18 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 
-interface ApiError {
-  message: string;
-  error?: string;
-}
+
+const staticCategories = ["Showroom", "Bike", "Scooters", "Services"];
 
 const Page = () => {
+  const router = useRouter();
   const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
-  const [category, setCategory] = useState<string>("");
-  const [categories, setCategories] = useState<string[]>([]);
+  const [category, setCategory] = useState<string>(staticCategories[0]);
+  const [title, setTitle] = useState<string>(""); // New state for title
   const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState("");
-
-  // Fetch categories on mount
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const res = await fetch("/api/newcategory");
-        const data = await res.json();
-        if (res.ok && data.categories) {
-          setCategories(data.categories);
-          setCategory(data.categories[0] || ""); // set default category
-        } else {
-          throw new Error(data.error || "Failed to load categories");
-        }
-      } catch (error: unknown) {
-        const err = error as Error;
-        setMessage(err.message || "Error loading categories");
-      }
-    };
-
-    fetchCategories();
-  }, []);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedFiles(e.target.files);
@@ -45,16 +22,20 @@ const Page = () => {
     setCategory(e.target.value);
   };
 
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!selectedFiles || selectedFiles.length === 0) {
-      setMessage("Please select at least one image.");
+    if (!title.trim()) {
+      setMessage("Please enter a title.");
       return;
     }
 
-    if (!category) {
-      setMessage("Please select a category.");
+    if (!selectedFiles || selectedFiles.length === 0) {
+      setMessage("Please select at least one image.");
       return;
     }
 
@@ -65,6 +46,7 @@ const Page = () => {
       for (let i = 0; i < selectedFiles.length; i++) {
         const file = selectedFiles[i];
         const formData = new FormData();
+        formData.append("title", title); // Add title
         formData.append("category", category);
         formData.append("image", file);
 
@@ -74,13 +56,15 @@ const Page = () => {
         });
 
         if (!res.ok) {
-          const error = await res.json() as ApiError;
+          const error = await res.json();
           throw new Error(error.error || "Upload failed");
         }
       }
 
       setMessage("All images uploaded successfully!");
+       router.push("/admin/gallery");
       setSelectedFiles(null);
+      setTitle(""); // Reset title
     } catch (error: unknown) {
       const err = error as Error;
       setMessage(`Upload error: ${err.message}`);
@@ -93,12 +77,20 @@ const Page = () => {
     <div className="mx-auto p-4">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">Upload Gallery Images</h1>
-        <Link href="/admin/gallery/newcategory">
-          <Button>Create New Category</Button>
-        </Link>
       </div>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <label className="font-semibold">
+          Title:
+          <input
+            type="text"
+            value={title}
+            onChange={handleTitleChange}
+            placeholder="e.g., Showroom Interior"
+            className="block w-full mt-1 p-2 border rounded"
+          />
+        </label>
+
         <label className="font-semibold">
           Select Category:
           <select
@@ -106,15 +98,11 @@ const Page = () => {
             onChange={handleCategoryChange}
             className="block w-full mt-1 p-2 border rounded"
           >
-            {categories.length === 0 ? (
-              <option disabled>Loading categories...</option>
-            ) : (
-              categories.map((cat) => (
-                <option key={cat} value={cat}>
-                  {cat}
-                </option>
-              ))
-            )}
+            {staticCategories.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
+            ))}
           </select>
         </label>
 

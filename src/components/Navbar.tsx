@@ -1,489 +1,237 @@
-// // "use client"
-// // import { useState, useEffect } from "react"
-// // import Link from "next/link"
-// // import { usePathname } from "next/navigation"
-// // import { Menu, X } from "lucide-react"
-// // import { Button } from "@/components/ui/button"
-
-// // const navItems = [
-// //   { name: "Home", href: "/" },
-// //   { name: "Notice", href: "/notice" },
-// //   { name: "Result", href: "/result" },
-// //   { name: "Staff", href: "/staff" },
-// //   { name: "Gallery", href: "/gallery" },
-// //   { name: "About", href: "/about" },
-// //   { name: "Contact", href: "/contact" },
-// // ]
-
-// // export default function Navbar() {
-// //   const [isOpen, setIsOpen] = useState(false)
-// //   const pathname = usePathname()
-
-// //   // Close the mobile menu when the pathname changes
-// //   useEffect(() => {
-// //     setIsOpen(false)
-// //   }, [pathname])
-
-// //   return (
-// //     <nav className="bg-white/40 backdrop-blur-lg fixed w-full z-50">
-// //       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-// //         <div className="flex items-center justify-between h-16">
-// //           <div className="flex items-center">
-// //             <Link href="/" className="text-luxury-gold font-serif text-xl font-bold">
-// //               Abc Restaurant
-// //             </Link>
-// //           </div>
-// //           <div className="hidden md:block">
-// //             <div className="ml-10 flex items-baseline space-x-4">
-// //               {navItems.map((item) => (
-// //                 <Link
-// //                   key={item.name}
-// //                   href={item.href}
-// //                   className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300 ${
-// //                     pathname === item.href ? "text-luxury-gold" : "text-luxury-cream hover:text-luxury-gold"
-// //                   }`}
-// //                 >
-// //                   {item.name}
-// //                 </Link>
-// //               ))}
-// //               <Button className="w-full mt-2 bg-luxury-gold hover:bg-luxury-silver text-luxury-charcoal transition-colors duration-300">
-// //              <Link href="/admin">
-// //               Admin Access
-// //               </Link>
-// //             </Button>
-// //             </div>
-// //           </div>
-// //           <div className="md:hidden">
-// //             <button
-// //               onClick={() => setIsOpen(!isOpen)}
-// //               className="inline-flex items-center justify-center p-2 rounded-md text-luxury-cream hover:text-luxury-gold focus:outline-none"
-// //             >
-// //               {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-// //             </button>
-// //           </div>
-// //         </div>
-// //       </div>
-// //       {isOpen && (
-// //         <div className="md:hidden">
-// //           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-// //             {navItems.map((item) => (
-// //               <Link
-// //                 key={item.name}
-// //                 href={item.href}
-// //                 className={`block px-3 py-2 rounded-md text-base font-medium transition-colors duration-300 ${
-// //                   pathname === item.href ? "text-luxury-gold" : "text-luxury-cream hover:text-luxury-gold"
-// //                 }`}
-// //               >
-// //                 {item.name}
-// //               </Link>
-// //             ))}
-// //             <Button className="w-full mt-2 bg-luxury-gold hover:bg-luxury-silver text-luxury-charcoal transition-colors duration-300">
-// //              <Link href="/admin">
-// //               Admin Access
-// //               </Link>
-// //             </Button>
-// //           </div>
-// //         </div>
-// //       )}
-// //     </nav>
-// //   )
-// // }
-
-
-
-// "use client"
-
-// import { useState } from "react"
-// import Link from "next/link"
-// import { Menu, X, BookOpen, ChevronDown, Search, Phone, Mail } from "lucide-react"
-// import { Button } from "@/components/ui/button"
-
-// export default function Navbar() {
-//   const [isMenuOpen, setIsMenuOpen] = useState(false)
-//   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
-
-//   return (
-//     <>
-//       {/* Top Info Bar */}
-//       <div className="bg-blue-800 text-white py-2 hidden md:block">
-//         <div className="container mx-auto px-4">
-//           <div className="flex justify-between items-center">
-//             <div className="flex items-center space-x-4">
-//               <div className="flex items-center">
-//                 <Phone className="h-4 w-4 mr-2" />
-//                 <span className="text-sm">+977-123-456789</span>
-//               </div>
-//               <div className="flex items-center">
-//                 <Mail className="h-4 w-4 mr-2" />
-//                 <span className="text-sm">info@suryaprakashshool.edu.np</span>
-//               </div>
-//             </div>
-//             <div className="flex items-center space-x-4">
-//               <Link href="/admin" className="text-sm hover:text-blue-200">
-//                 Colleage Portal
-//               </Link>
-//               <Link href="/parent-portal" className="text-sm hover:text-blue-200">
-//                 Parent Portal
-//               </Link>
-//               <Link href="/alumni" className="text-sm hover:text-blue-200">
-//                 Alumni
-//               </Link>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-
-//       <nav className="bg-white shadow-lg sticky top-0 z-50">
-//         <div className="container mx-auto px-4">
-//           <div className="flex justify-between items-center h-20">
-//             {/* Logo */}
-//             <Link href="/" className="flex items-center space-x-3">
-//               <div className="bg-blue-600 h-12 w-12 rounded-full flex items-center justify-center">
-//                 <BookOpen className="h-7 w-7 text-white" />
-//               </div>
-//               <div>
-//                 <h1 className="font-bold text-xl md:text-2xl text-gray-800">Surya Prakash Secondary School</h1>
-//                 <p className="text-xs md:text-sm text-gray-500">Excellence in Education Since 1943</p>
-//               </div>
-//             </Link>
-
-//             {/* Desktop Navigation */}
-//             <div className="hidden lg:flex items-center space-x-1">
-//               <Link
-//                 href="/"
-//                 className="px-3 py-2 text-blue-700 hover:bg-blue-50 rounded-md font-medium transition-colors"
-//               >
-//                 Home
-//               </Link>
-
-//               <div
-//                 className="relative group"
-//                 onMouseEnter={() => setActiveDropdown("about")}
-//                 onMouseLeave={() => setActiveDropdown(null)}
-//               >
-//                 <button className="px-3 py-2 flex items-center text-blue-700 hover:bg-blue-50 rounded-md font-medium transition-colors">
-//                   About <ChevronDown className="ml-1 h-4 w-4" />
-//                 </button>
-//                 {(activeDropdown === "about" || activeDropdown === null) && (
-//                   <div
-//                     className={`absolute top-full left-0 mt-1 w-56 bg-white shadow-lg rounded-md border border-gray-100 transition-all duration-200 ${
-//                       activeDropdown === "about"
-//                         ? "opacity-100 visible transform translate-y-0"
-//                         : "opacity-0 invisible transform -translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0"
-//                     }`}
-//                   >
-//                     <Link href="/about" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-700">
-//                       School History
-//                     </Link>
-//                     <Link
-//                       href="/mission"
-//                       className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-700"
-//                     >
-//                       Mission & Vision
-//                     </Link>
-//                     <Link
-//                       href="/leadership"
-//                       className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-700"
-//                     >
-//                       Leadership
-//                     </Link>
-//                     <Link
-//                       href="/facilities"
-//                       className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-700"
-//                     >
-//                       Facilities
-//                     </Link>
-//                   </div>
-//                 )}
-//               </div>
-
-//               <div
-//                 className="relative group"
-//                 onMouseEnter={() => setActiveDropdown("academics")}
-//                 onMouseLeave={() => setActiveDropdown(null)}
-//               >
-//                 <button className="px-3 py-2 flex items-center text-blue-700 hover:bg-blue-50 rounded-md font-medium transition-colors">
-//                   Academics <ChevronDown className="ml-1 h-4 w-4" />
-//                 </button>
-//                 {(activeDropdown === "academics" || activeDropdown === null) && (
-//                   <div
-//                     className={`absolute top-full left-0 mt-1 w-56 bg-white shadow-lg rounded-md border border-gray-100 transition-all duration-200 ${
-//                       activeDropdown === "academics"
-//                         ? "opacity-100 visible transform translate-y-0"
-//                         : "opacity-0 invisible transform -translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0"
-//                     }`}
-//                   >
-//                     <Link
-//                       href="/primary"
-//                       className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-700"
-//                     >
-//                       Primary School (1-5)
-//                     </Link>
-//                     <Link href="/middle" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-700">
-//                       Middle School (6-8)
-//                     </Link>
-//                     <Link
-//                       href="/secondary"
-//                       className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-700"
-//                     >
-//                       Secondary School (9-10)
-//                     </Link>
-//                     <Link
-//                       href="/higher-secondary"
-//                       className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-700"
-//                     >
-//                       Higher Secondary (11-12)
-//                     </Link>
-//                     <Link
-//                       href="/curriculum"
-//                       className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-700"
-//                     >
-//                       Curriculum
-//                     </Link>
-//                   </div>
-//                 )}
-//               </div>
-
-//               <Link
-//                 href="/admissions"
-//                 className="px-3 py-2 text-blue-700 hover:bg-blue-50 rounded-md font-medium transition-colors"
-//               >
-//                 Admissions
-//               </Link>
-//               <Link
-//                 href="/student-life"
-//                 className="px-3 py-2 text-blue-700 hover:bg-blue-50 rounded-md font-medium transition-colors"
-//               >
-//                 Student Life
-//               </Link>
-//               <Link
-//                 href="/news"
-//                 className="px-3 py-2 text-blue-700 hover:bg-blue-50 rounded-md font-medium transition-colors"
-//               >
-//                 News & Events
-//               </Link>
-//               <Link
-//                 href="/gallery"
-//                 className="px-3 py-2 text-blue-700 hover:bg-blue-50 rounded-md font-medium transition-colors"
-//               >
-//                 Gallery
-//               </Link>
-//               <Link
-//                 href="/contact"
-//                 className="px-3 py-2 text-blue-700 hover:bg-blue-50 rounded-md font-medium transition-colors"
-//               >
-//                 Contact
-//               </Link>
-
-//               <div className="ml-4 flex items-center space-x-2">
-//                 <button className="p-2 text-blue-700 hover:bg-blue-50 rounded-full">
-//                   <Search className="h-5 w-5" />
-//                 </button>
-//                 <Button className="bg-blue-600 hover:bg-blue-700 text-white px-5">Apply Now</Button>
-//               </div>
-//             </div>
-
-//             {/* Mobile Menu Button */}
-//             <div className="lg:hidden">
-//               <button
-//                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-//                 className="text-blue-700 hover:text-blue-600 focus:outline-none"
-//               >
-//                 {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-//               </button>
-//             </div>
-//           </div>
-
-//           {/* Mobile Navigation */}
-//           {isMenuOpen && (
-//             <div className="lg:hidden py-4 space-y-2 border-t">
-//               <Link href="/" className="block py-2 px-4 text-blue-700 hover:bg-blue-50 rounded-md">
-//                 Home
-//               </Link>
-//               <div className="border-b border-gray-100 my-2"></div>
-//               <div className="px-4 py-2">
-//                 <div className="font-medium text-blue-700">About</div>
-//                 <Link href="/about" className="block py-2 pl-4 text-gray-700 hover:text-blue-700">
-//                   School History
-//                 </Link>
-//                 <Link href="/mission" className="block py-2 pl-4 text-gray-700 hover:text-blue-700">
-//                   Mission & Vision
-//                 </Link>
-//                 <Link href="/leadership" className="block py-2 pl-4 text-gray-700 hover:text-blue-700">
-//                   Leadership
-//                 </Link>
-//                 <Link href="/facilities" className="block py-2 pl-4 text-gray-700 hover:text-blue-700">
-//                   Facilities
-//                 </Link>
-//               </div>
-//               <div className="border-b border-gray-100 my-2"></div>
-//               <div className="px-4 py-2">
-//                 <div className="font-medium text-blue-700">Academics</div>
-//                 <Link href="/primary" className="block py-2 pl-4 text-gray-700 hover:text-blue-700">
-//                   Primary School (1-5)
-//                 </Link>
-//                 <Link href="/middle" className="block py-2 pl-4 text-gray-700 hover:text-blue-700">
-//                   Middle School (6-8)
-//                 </Link>
-//                 <Link href="/secondary" className="block py-2 pl-4 text-gray-700 hover:text-blue-700">
-//                   Secondary School (9-10)
-//                 </Link>
-//                 <Link href="/higher-secondary" className="block py-2 pl-4 text-gray-700 hover:text-blue-700">
-//                   Higher Secondary (11-12)
-//                 </Link>
-//                 <Link href="/curriculum" className="block py-2 pl-4 text-gray-700 hover:text-blue-700">
-//                   Curriculum
-//                 </Link>
-//               </div>
-//               <div className="border-b border-gray-100 my-2"></div>
-//               <Link href="/admissions" className="block py-2 px-4 text-blue-700 hover:bg-blue-50 rounded-md">
-//                 Admissions
-//               </Link>
-//               <Link href="/student-life" className="block py-2 px-4 text-blue-700 hover:bg-blue-50 rounded-md">
-//                 Student Life
-//               </Link>
-//               <Link href="/news" className="block py-2 px-4 text-blue-700 hover:bg-blue-50 rounded-md">
-//                 News & Events
-//               </Link>
-//               <Link href="/gallery" className="block py-2 px-4 text-blue-700 hover:bg-blue-50 rounded-md">
-//                 Gallery
-//               </Link>
-//               <Link href="/contact" className="block py-2 px-4 text-blue-700 hover:bg-blue-50 rounded-md">
-//                 Contact
-//               </Link>
-//               <div className="pt-4 px-4">
-//                 <Button className="w-full bg-blue-600 hover:bg-blue-700">Apply Now</Button>
-//               </div>
-//             </div>
-//           )}
-//         </div>
-//       </nav>
-//     </>
-//   )
-// }
-
-
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
-import { Menu, X, BookOpen, Phone, Mail } from "lucide-react"
+import { usePathname } from "next/navigation"
+import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Menu, Car, X, Phone, MapPin } from "lucide-react"
+import { cn } from "@/lib/utils"
 
-export default function Navbar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
+const navigation = [
+  { name: "Home", href: "/" },
+  { name: "All Bikes", href: "/bikes" },
+  { name: "Gallery", href: "/gallery" },
+  { name: "About", href: "/about" },
+  { name: "Contact", href: "/contact" },
+]
+
+const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const pathname = usePathname()
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20)
+    }
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
 
   return (
     <>
-      {/* Top Info Bar */}
-      <div className="bg-blue-800 text-white py-2 hidden md:block">
-        <div className="container mx-auto px-2">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center">
-                <Phone className="h-4 w-4 mr-2" />
-                <span className="text-sm">+977-123-456789</span>
+      {/* Top Bar */}
+      <div className="bg-gradient-to-r from-purple-600 via-blue-600 to-cyan-500 text-white py-2 hidden md:block">
+        <div className="container mx-auto px-4">
+          <div className="flex justify-between items-center text-sm">
+            <div className="flex items-center space-x-6">
+              <div className="flex items-center space-x-2">
+                <MapPin className="w-4 h-4" />
+                <span>Surkhet, Karnali Pradesh</span>
               </div>
-              <div className="flex items-center">
-                <Mail className="h-4 w-4 mr-2" />
-                <span className="text-sm">info@suryaprakashshool.edu.np</span>
+              <div className="flex items-center space-x-2">
+                <Phone className="w-4 h-4" />
+                <span>+977-123-456-789</span>
               </div>
             </div>
-            <div className="flex items-center space-x-4">
-              <Link href="/admin" className="text-sm hover:text-blue-200">
-                Admin Portal
-              </Link>
-              <Link href="/parent-portal" className="text-sm hover:text-blue-200">
-                Parent Portal
-              </Link>
-              <Link href="/alumni" className="text-sm hover:text-blue-200">
-                Alumni
-              </Link>
+            <div className="text-sm">
+              <span className="animate-pulse">🔥 Special Offers Available!</span>
             </div>
           </div>
         </div>
       </div>
 
       {/* Main Navbar */}
-      <nav className="bg-white shadow-lg sticky top-0 z-50">
-        <div className="container mx-auto px-2">
-          <div className="flex justify-between items-center h-20">
+      <motion.header
+        className={cn(
+          "sticky top-0 z-50 w-full transition-all duration-300",
+          scrolled
+            ? "bg-white/95 backdrop-blur-lg shadow-lg border-b border-purple-100"
+            : "bg-white/90 backdrop-blur-sm border-b border-gray-100",
+        )}
+      >
+        <div className="container mx-auto px-4">
+          <div className="flex h-20 items-center justify-between">
             {/* Logo */}
-            <Link href="/" className="flex items-center space-x-3">
-              <div className="bg-blue-600 h-12 w-12 rounded-full flex items-center justify-center">
-                <BookOpen className="h-7 w-7 text-white" />
-              </div>
-              <div>
-                <h1 className="font-bold text-base md:text-xl lg:text-2xl text-gray-800">Surya Prakash Secondary School</h1>
-                <p className="text-xs md:text-sm text-gray-500">Excellence in Education Since 1943</p>
-              </div>
-            </Link>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Link href="/" className="flex items-center space-x-3 group">
+                <div className="relative">
+                  <div className="bg-gradient-to-br from-purple-600 to-blue-600 p-3 rounded-xl shadow-lg group-hover:shadow-xl transition-all duration-300">
+                    <Car className="h-8 w-8 text-white" />
+                  </div>
+                  <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-pink-500 to-orange-500 rounded-full animate-pulse"></div>
+                </div>
+                <div className="hidden sm:block">
+                  <div className="font-bold text-2xl bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                    Abc Recondition
+                  </div>
+                  <div className="text-sm text-gray-600 font-medium">Surkhet • Premium Quality</div>
+                </div>
+              </Link>
+            </motion.div>
 
-            {/* Desktop Menu */}
-            <div className="hidden lg:flex items-center space-x-1">
-              {[
-                { href: "/", label: "Home" },
-                { href: "/about", label: "About" },
-                { href: "/academics", label: "Academics" },
-                { href: "/student-life", label: "Student Life" },
-                { href: "/news", label: "News & Events" },
-                { href: "/gallery", label: "Gallery" },
-                { href: "/contact", label: "Contact" },
-                { href: "/notice", label: "Notice" },
-                { href: "/result", label: "Result" },
-              ].map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="px-2 py-2 text-sm md:text-base lg:text-sm xl:text-base text-blue-700 hover:bg-blue-50 rounded-md font-medium transition-colors"
+            {/* Desktop Navigation */}
+            <nav className="hidden lg:flex items-center space-x-1">
+              {navigation.map((item, index) => (
+                <motion.div
+                  key={item.name}
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
                 >
-                  {item.label}
-                </Link>
+                  <Link
+                    href={item.href}
+                    className={cn(
+                      "relative px-4 py-2 text-sm font-semibold transition-all duration-300 rounded-lg group",
+                      pathname === item.href
+                        ? "text-purple-600 bg-purple-50"
+                        : "text-gray-700 hover:text-purple-600 hover:bg-purple-50",
+                    )}
+                  >
+                    {item.name}
+                    {pathname === item.href && (
+                      <motion.div
+                        className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full"
+                        layoutId="navbar-indicator"
+                      />
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-r from-purple-600/10 to-blue-600/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  </Link>
+                </motion.div>
               ))}
+            </nav>
+
+            {/* CTA Buttons */}
+            <div className="hidden md:flex items-center space-x-3">
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button
+                  variant="outline"
+                  className="border-purple-200 text-purple-600 hover:bg-purple-50 hover:border-purple-300 transition-all duration-300"
+                >
+                  <Phone className="w-4 h-4 mr-2" />
+                  9868347582
+                </Button>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button
+                  asChild
+                  className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+                >
+                  <a href="https://www.google.com/maps/place/Surkhet,+Nepal" target="_blank" rel="noopener noreferrer">Map Location</a>
+                </Button>
+              </motion.div>
             </div>
 
-            {/* Mobile Menu Button */}
-            <div className="lg:hidden">
-              <button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="text-blue-700 hover:text-blue-600 focus:outline-none"
-              >
-                {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-              </button>
-            </div>
+            {/* Mobile menu button */}
+            <Sheet open={isOpen} onOpenChange={setIsOpen}>
+              <SheetTrigger asChild className="lg:hidden">
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Button variant="ghost" size="icon" className="relative">
+                    <AnimatePresence mode="wait">
+                      {isOpen ? (
+                        <motion.div
+                          key="close"
+                          initial={{ rotate: -90, opacity: 0 }}
+                          animate={{ rotate: 0, opacity: 1 }}
+                          exit={{ rotate: 90, opacity: 0 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <X className="h-6 w-6" />
+                        </motion.div>
+                      ) : (
+                        <motion.div
+                          key="menu"
+                          initial={{ rotate: 90, opacity: 0 }}
+                          animate={{ rotate: 0, opacity: 1 }}
+                          exit={{ rotate: -90, opacity: 0 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <Menu className="h-6 w-6" />
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                    <span className="sr-only">Open menu</span>
+                  </Button>
+                </motion.div>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-80 bg-gradient-to-br from-purple-50 to-blue-50">
+                <motion.div
+                  initial={{ opacity: 0, x: 50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="flex items-center justify-between mb-8"
+                >
+                  <Link href="/" className="flex items-center space-x-3" onClick={() => setIsOpen(false)}>
+                    <div className="bg-gradient-to-br from-purple-600 to-blue-600 p-3 rounded-xl shadow-lg">
+                      <Car className="h-6 w-6 text-white" />
+                    </div>
+                    <div>
+                      <div className="font-bold text-xl bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                        Abc Recondition
+                      </div>
+                      <div className="text-sm text-gray-600">Surkhet</div>
+                    </div>
+                  </Link>
+                </motion.div>
+
+                <nav className="flex flex-col space-y-2">
+                  {navigation.map((item, index) => (
+                    <motion.div
+                      key={item.name}
+                      initial={{ opacity: 0, x: 50 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.3, delay: index * 0.1 }}
+                    >
+                      <Link
+                        href={item.href}
+                        onClick={() => setIsOpen(false)}
+                        className={cn(
+                          "flex items-center text-lg font-semibold transition-all duration-300 py-3 px-4 rounded-xl",
+                          pathname === item.href
+                            ? "text-purple-600 bg-white shadow-md border-l-4 border-purple-600"
+                            : "text-gray-700 hover:text-purple-600 hover:bg-white/50",
+                        )}
+                      >
+                        {item.name}
+                      </Link>
+                    </motion.div>
+                  ))}
+                  <motion.div
+                    initial={{ opacity: 0, x: 50 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3, delay: 0.6 }}
+                    className="pt-6 border-t border-purple-200 space-y-3"
+                  >
+                    <Button className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg">
+                      <Phone className="w-4 h-4 mr-2" />
+                      9868347582
+                    </Button>
+                    <Button asChild variant="outline" className="w-full border-purple-200 text-purple-600">
+                      <a href="https://www.google.com/maps/place/Surkhet,+Nepal" target="_blank" rel="noopener noreferrer" onClick={() => setIsOpen(false)}>
+                        Map Location
+                      </a>
+                    </Button>
+                  </motion.div>
+                </nav>
+              </SheetContent>
+            </Sheet>
           </div>
-
-          {/* Mobile Navigation */}
-          {isMenuOpen && (
-            <div className="lg:hidden py-4 space-y-2 border-t">
-              {[
-                { href: "/", label: "Home" },
-                { href: "/about", label: "About" },
-                { href: "/academics", label: "Academics" },
-                { href: "/student-life", label: "Student Life" },
-                { href: "/news", label: "News & Events" },
-                { href: "/gallery", label: "Gallery" },
-                { href: "/contact", label: "Contact" },
-                { href: "/notice", label: "Notice" },
-                { href: "/result", label: "Result" },
-              ].map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setIsMenuOpen(false)}
-                  className="block py-2 px-4 text-blue-700 hover:bg-blue-50 rounded-md"
-                >
-                  {item.label}
-                </Link>
-              ))}
-
-              <div className="pt-4 px-4">
-                <Button className="w-full bg-blue-600 hover:bg-blue-700">Apply Now</Button>
-              </div>
-            </div>
-          )}
         </div>
-      </nav>
+      </motion.header>
     </>
   )
 }
+
+export default Navbar

@@ -24,10 +24,8 @@ const sidebarGroups = [
   {
     label: "Content Management",
     items: [
-      { label: "Notice", href: "/admin/notice", icon: Package },
-      { label: "Add Notice", href: "/admin/notice/new", icon: Plus },
-      { label: "Result", href: "/admin/result", icon: Package },
-      { label: "Add Result", href: "/admin/result/new", icon: Plus },
+      { label: "Bike", href: "/admin/bike", icon: Package },
+      { label: "Add Bike Details", href: "/admin/bike/new", icon: Plus },
     ]
   },
   {

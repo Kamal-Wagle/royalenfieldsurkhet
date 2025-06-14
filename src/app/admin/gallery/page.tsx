@@ -88,6 +88,7 @@ const Page = () => {
               className="w-full h-64 object-cover rounded-xl shadow"
             />
             <div className="p-2">
+              <p className="text-sm font-semibold">{img.title}</p>
               <p className="text-sm font-semibold">{img.category}</p>
               <p className="text-xs text-gray-500">
                 {new Date(img.createdAt).toLocaleDateString()}

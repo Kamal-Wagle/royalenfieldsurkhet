@@ -2,6 +2,10 @@ import { Schema, model, models } from "mongoose";
 
 const gallerySchema = new Schema(
   {
+    title: {
+      type: String,
+      required: true,      // Category like "College Images", "Welcome Program 2025", etc.
+    },
     src: {
       type: String,
       required: true,      // URL of the image, required
