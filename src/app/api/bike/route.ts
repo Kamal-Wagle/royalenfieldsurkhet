@@ -6,13 +6,11 @@ import connectDB from "@/lib/db";
 import BikeDetails from "@/lib/models/bike";
 
 const folderId = process.env.GDRIVE_Bike_FOLDER_ID;
-if (!folderId) {
-  throw new Error("GDRIVE_Bike_FOLDER_ID is not defined");
-}
+if (!folderId) throw new Error("GDRIVE_Bike_FOLDER_ID is not defined");
 
 const privateKey = process.env.GDRIVE_PRIVATE_KEY
   ?.replace(/\\n/g, "\n")
-  .replace(/^"(.*)"$/, '$1')
+  .replace(/^"(.*)"$/, "$1")
   .trim();
 
 const authenticateGoogle = () => {
@@ -67,59 +65,31 @@ const uploadFileToDrive = async (folderId: string, file: File) => {
   };
 };
 
-// POST: Upload a bike
+// POST: Upload a new bike
 export async function POST(req: Request) {
   try {
     await connectDB();
     const formData = await req.formData();
 
-    // Required fields
     const name = formData.get("name") as string;
-    const price = formData.get("price") as string;
-    const year = formData.get("year") as string;
-    const mileage = formData.get("mileage") as string;
-    const condition = formData.get("condition") as string;
-    const type = formData.get("type") as string;
-    const brand = formData.get("brand") as string;
-    const engine = formData.get("engine") as string;
-    const fuelType = formData.get("fuelType") as string;
-    const transmission = formData.get("transmission") as string;
-    const color = formData.get("color") as string;
-    const owners = formData.get("owners") as string;
-    const insurance = formData.get("insurance") as string;
-    const registration = formData.get("registration") as string;
     const description = formData.get("description") as string;
+    const originalPrice = formData.get("originalPrice") as string;
+    const category = formData.get("category") as string;
+    const badge = formData.get("badge") as string;
+    const price = formData.get("price") as string;
 
-    const features = JSON.parse(formData.get("features") as string); // array
-    const specifications = JSON.parse(formData.get("specifications") as string); // object
+    const features = JSON.parse(formData.get("features") as string); // nested object
+    const variants = JSON.parse(formData.get("variants") as string); // array of { name, price }
+    const colors = JSON.parse(formData.get("colors") as string);     // array of { name, code }
 
     const imageFiles = formData.getAll("images") as File[];
-    if (
-      !name ||
-      !price ||
-      !year ||
-      !mileage ||
-      !condition ||
-      !type ||
-      !brand ||
-      !engine ||
-      !fuelType ||
-      !transmission ||
-      !color ||
-      !owners ||
-      !insurance ||
-      !registration ||
-      !description ||
-      !features ||
-      !specifications ||
-      imageFiles.length === 0
-    ) {
+
+    if (!name || !description || !originalPrice || !category || !badge || !price || !features || !variants || !colors || imageFiles.length === 0) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    // Upload images to Drive
     const uploadedImages = await Promise.all(
-      imageFiles.map((file) => uploadFileToDrive(folderId as string, file))
+      imageFiles.map((file) => uploadFileToDrive(folderId!, file))
     );
 
     const imageUrls = uploadedImages.map((img) => img.link);
@@ -127,22 +97,14 @@ export async function POST(req: Request) {
 
     const newBike = await BikeDetails.create({
       name,
-      price,
-      year,
-      mileage,
-      condition,
-      type,
-      brand,
-      engine,
-      fuelType,
-      transmission,
-      color,
-      owners,
-      insurance,
-      registration,
       description,
+      originalPrice,
+      category,
+      badge,
+      price,
       features,
-      specifications,
+      variants,
+      colors,
       images: imageUrls,
       fileId,
     });
@@ -161,6 +123,14 @@ export async function GET() {
     await connectDB();
     const bikes = await BikeDetails.find().sort({ createdAt: -1 });
 
+    if (!bikes || bikes.length === 0) {
+      return NextResponse.json({
+        message: "No bikes found",
+        success: true,
+        bikes: [],
+      });
+    }
+
     return NextResponse.json({
       message: "Bikes fetched successfully",
       success: true,
@@ -169,6 +139,10 @@ export async function GET() {
   } catch (error) {
     console.error("Fetch error:", error);
     const errorMessage = error instanceof Error ? error.message : "Internal Server Error";
-    return NextResponse.json({ error: errorMessage }, { status: 500 });
+    return NextResponse.json({ 
+      error: errorMessage,
+      success: false,
+      bikes: []
+    }, { status: 500 });
   }
 }

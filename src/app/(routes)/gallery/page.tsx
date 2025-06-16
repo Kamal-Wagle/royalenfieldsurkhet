@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { useQuery } from "@tanstack/react-query"
 import $axios from "@/lib/axios.instance"
+import { Crown, Star, MapPin, Phone } from "lucide-react"
 
 // Format Google Drive image URL
 const formatDriveUrl = (url: string): string =>
@@ -41,35 +42,47 @@ export default function GalleryPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-500"></div>
       </div>
     );
   }
 
   if (isError) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-red-600 mb-4">Error loading gallery</h2>
-          <p className="text-gray-600">Please try again later</p>
+          <h2 className="text-2xl font-bold text-red-400 mb-4">Error loading gallery</h2>
+          <p className="text-gray-300">Please try again later</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-8">
-        {/* Header */}
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800">
+      <div className="container mx-auto px-4 py-16">
+        {/* Premium Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          className="text-center mb-16"
         >
-          <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">Gallery</h1>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="inline-flex items-center px-6 py-3 rounded-full glass-luxury mb-8"
+          >
+            <Crown className="w-5 h-5 text-yellow-500 mr-2" />
+            <span className="text-yellow-500 text-sm font-semibold tracking-wider uppercase">Premium Gallery</span>
+          </motion.div>
+          
+          <h1 className="text-5xl md:text-6xl font-bold text-white mb-8 text-luxury">
+            Our <span className="gradient-text-luxury">Gallery</span>
+          </h1>
+          <p className="text-xl text-gray-300 leading-relaxed text-premium max-w-3xl mx-auto">
             Take a look at our showroom, vehicles, and services. See why customers choose Abc Recondition Surkhet.
           </p>
         </motion.div>
@@ -79,16 +92,16 @@ export default function GalleryPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="flex flex-wrap justify-center gap-2 mb-8"
+          className="flex flex-wrap justify-center gap-3 mb-12"
         >
           {categories.map((category) => (
             <Badge
               key={category}
               variant={selectedCategory === category ? "default" : "outline"}
-              className={`px-4 py-2 cursor-pointer transition-colors ${
+              className={`px-4 py-2 cursor-pointer transition-all duration-300 ${
                 selectedCategory === category 
-                  ? "bg-blue-600 text-white" 
-                  : "hover:bg-blue-600 hover:text-white"
+                  ? "bg-yellow-500 text-gray-900 font-semibold" 
+                  : "bg-gray-800/50 text-gray-300 border border-gray-700 hover:bg-yellow-500 hover:text-gray-900 hover:border-yellow-500"
               }`}
               onClick={() => setSelectedCategory(category)}
             >
@@ -107,23 +120,23 @@ export default function GalleryPage() {
               transition={{ duration: 0.6, delay: index * 0.1 }}
               whileHover={{ y: -5 }}
             >
-              <Card className="overflow-hidden group cursor-pointer">
+              <Card className="card-luxury overflow-hidden group cursor-pointer border-0 shadow-2xl">
                 <div className="relative">
                   <Image
                     src={formatDriveUrl(item.src)}
                     alt={item.title || "Gallery Image"}
                     width={600}
                     height={400}
-                    className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+                    className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
-                  <Badge className="absolute top-3 right-3 bg-blue-600">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <Badge className="absolute top-4 right-4 bg-yellow-500 text-gray-900 font-semibold">
                     {item.category}
                   </Badge>
                 </div>
-                <div className="p-4">
-                  <h3 className="font-semibold text-gray-900">{item.title || "Untitled"}</h3>
-                  <p className="text-sm text-gray-500 mt-1">
+                <div className="p-6 bg-gray-900/50 backdrop-blur-sm">
+                  <h3 className="font-semibold text-white text-lg mb-2">{item.title || "Untitled"}</h3>
+                  <p className="text-sm text-gray-400">
                     Added {new Date(item.createdAt).toLocaleDateString()}
                   </p>
                 </div>
@@ -140,15 +153,15 @@ export default function GalleryPage() {
             transition={{ duration: 0.6 }}
             className="text-center py-16"
           >
-            <div className="bg-white p-12 rounded-2xl shadow-xl border-0 max-w-md mx-auto">
+            <div className="glass-luxury p-12 rounded-2xl border border-yellow-500/20 max-w-md mx-auto">
               <div className="text-6xl mb-4">🔍</div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">No images found</h3>
-              <p className="text-gray-600 mb-6">
+              <h3 className="text-2xl font-bold text-white mb-4">No images found</h3>
+              <p className="text-gray-300 mb-6">
                 No images match your selected category. Try selecting a different category.
               </p>
               <Badge
                 variant="outline"
-                className="px-4 py-2 cursor-pointer hover:bg-blue-600 hover:text-white transition-colors"
+                className="px-4 py-2 cursor-pointer bg-yellow-500 text-gray-900 hover:bg-yellow-600 transition-colors"
                 onClick={() => setSelectedCategory("All")}
               >
                 Show All Images
@@ -163,17 +176,27 @@ export default function GalleryPage() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="mt-16 text-center"
+          className="mt-20 text-center"
         >
-          <Card className="p-8 bg-blue-50">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Visit Our Showroom</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto mb-6">
+          <Card className="glass-luxury p-10 border border-yellow-500/20">
+            <div className="flex items-center justify-center gap-3 mb-6">
+              <Star className="w-6 h-6 text-yellow-500" />
+              <h2 className="text-3xl font-bold text-white">Visit Our Showroom</h2>
+              <Star className="w-6 h-6 text-yellow-500" />
+            </div>
+            <p className="text-gray-300 text-lg max-w-3xl mx-auto mb-8">
               Experience our wide collection of quality second-hand bikes and scooters in person. Our friendly staff is
               ready to help you find your perfect ride.
             </p>
-            <div className="text-sm text-gray-500">
-              <p>📍 Surkhet, Karnali Pradesh</p>
-              <p>📞 Contact us for showroom timings</p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 text-gray-300">
+              <div className="flex items-center gap-2">
+                <MapPin className="w-5 h-5 text-yellow-500" />
+                <span>Surkhet, Karnali Pradesh</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Phone className="w-5 h-5 text-yellow-500" />
+                <span>Contact us for showroom timings</span>
+              </div>
             </div>
           </Card>
         </motion.div>

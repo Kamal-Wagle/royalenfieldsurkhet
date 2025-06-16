@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
 import connectDB from "@/lib/db";
 import User from "@/lib/models/user";
+import { verifyAdmin } from "@/lib/auth";
 
 // Register admin
 export async function POST(request: NextRequest) {
@@ -18,11 +19,13 @@ export async function POST(request: NextRequest) {
         const isUser = await User.findOne({ email });
 
         if (isUser) {
-            return NextResponse.json({ error: "User already exists" }, { status: 400 });
+            return NextResponse.json({ error: "Authentication required" }, { status: 400 });
         }
 
         
-        
+        const user = await verifyAdmin(request);
+        if (user instanceof NextResponse) return user;
+    
 
         // Hash the password
         const salt = await bcryptjs.genSalt(10);
